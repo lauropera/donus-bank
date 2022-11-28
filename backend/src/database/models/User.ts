@@ -9,7 +9,7 @@ interface IUser {
   accountId: number;
 }
 
-type IUserCreationAttrs = Omit<IUser, 'id'>;
+type IUserCreationAttrs = Omit<IUser, 'id, accountId'>;
 
 class User extends Sequelize.Model<IUser, IUserCreationAttrs> {
   declare id: number;
