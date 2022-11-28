@@ -12,7 +12,11 @@ class TransactionController {
   }
 
   async listAll(req: Request, res: Response): Promise<void> {
-    const transactions = await this._service.getAll();
+    const {
+      data: { id },
+    } = req.body.user;
+
+    const transactions = await this._service.getAll(id);
     res.status(StatusCodes.OK).json(transactions);
   }
 }
