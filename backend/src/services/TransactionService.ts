@@ -2,14 +2,14 @@ import HttpException from '../utils/HttpException';
 import Account from '../database/models/Account';
 import Transaction, {
   ITransaction,
-  ITransactionCreationAttrs,
+  ITransactionCreation,
 } from '../database/models/Transaction';
 import { transactionSchema } from './utils/validations/schemas';
 
 class TransactionService {
   private _model = Transaction;
 
-  private static validateTransaction(data: ITransactionCreationAttrs): void {
+  private static validateTransaction(data: ITransactionCreation): void {
     const { error } = transactionSchema.validate(data);
     if (error) throw new HttpException(400, error.message);
   }
@@ -25,10 +25,7 @@ class TransactionService {
     return transactions;
   }
 
-  async insert(
-    userId: number,
-    data: ITransactionCreationAttrs,
-  ): Promise<void> {
+  async insert(userId: number, data: ITransactionCreation): Promise<void> {
     TransactionService.validateTransaction(data);
   }
 }

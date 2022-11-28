@@ -10,11 +10,11 @@ interface IUser {
   accountId: number;
 }
 
-type IUserCreationAttrs = Omit<IUser, 'id, accountId'>;
+type IUserCreation = Omit<IUser, 'id, accountId'>;
 
 type IUserReturned = Omit<IUser, 'password'>;
 
-class User extends Sequelize.Model<IUser, IUserCreationAttrs> {
+class User extends Sequelize.Model<IUser, IUserCreation> {
   declare id: number;
   declare name: string;
   declare cpf: string;
@@ -47,4 +47,4 @@ User.belongsTo(Account, { foreignKey: 'accountId', as: 'account' });
 Account.hasOne(User, { foreignKey: 'accountId', as: 'user' });
 
 export default User;
-export { IUser, IUserCreationAttrs, IUserReturned };
+export { IUser, IUserCreation, IUserReturned };

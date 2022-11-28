@@ -6,9 +6,9 @@ interface IAccount {
   balance?: number;
 }
 
-type IAccountCreationAttrs = Omit<IAccount, 'id'>;
+type IAccountCreation = Omit<IAccount, 'id'>;
 
-class Account extends Sequelize.Model<IAccount, IAccountCreationAttrs> {
+class Account extends Sequelize.Model<IAccount, IAccountCreation> {
   declare id: number;
   declare balance: number;
 }
@@ -32,4 +32,4 @@ Account.init(
 );
 
 export default Account;
-export { IAccount, IAccountCreationAttrs };
+export { IAccount, IAccountCreation };
