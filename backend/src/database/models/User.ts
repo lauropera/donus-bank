@@ -43,15 +43,8 @@ User.init(
   },
 );
 
-User.hasOne(Account, {
-  foreignKey: 'accountId',
-  as: 'account',
-});
-
-Account.belongsTo(User, {
-  foreignKey: 'accountId',
-  as: 'user',
-});
+User.belongsTo(Account, { foreignKey: 'accountId', as: 'account' });
+Account.hasOne(User, { foreignKey: 'accountId', as: 'user' });
 
 export default User;
 export { IUser, IUserCreationAttrs, IUserReturned };
