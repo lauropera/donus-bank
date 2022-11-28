@@ -21,7 +21,7 @@ class Token {
       const payload = await jwt.verify(token, SECRET);
       return payload as ITokenPayload;
     } catch (e) {
-      return next({ status: 401, message: 'O token precisa ser válido' });
+      return next({ status: 401, message: 'Token inválido' });
     }
   }
 }

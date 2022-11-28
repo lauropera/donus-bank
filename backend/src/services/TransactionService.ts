@@ -11,7 +11,6 @@ class TransactionService {
         { model: Account, as: 'receiverAccount' },
       ],
     });
-    console.log(transactions);
     return transactions;
   }
 }
