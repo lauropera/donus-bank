@@ -2,7 +2,8 @@ import { compare } from 'bcryptjs';
 import HttpException from '../utils/HttpException';
 import { ILogin } from '../interfaces';
 import User from '../database/models/User';
-import { loginSchema } from './utils/schemas';
+import { loginSchema } from './utils/validations/schemas';
+import Token from './utils/TokenUtils';
 
 class UserService {
   private _model = User;
