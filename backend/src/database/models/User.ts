@@ -19,6 +19,7 @@ class User extends Sequelize.Model<IUser, IUserCreationAttrs> {
   declare name: string;
   declare cpf: string;
   declare accountId: number;
+  declare password: string;
 }
 
 User.init(
