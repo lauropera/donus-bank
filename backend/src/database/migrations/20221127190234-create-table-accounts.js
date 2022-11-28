@@ -13,6 +13,7 @@ module.exports = {
       balance: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
     });
   },
