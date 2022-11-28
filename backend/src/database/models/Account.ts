@@ -3,7 +3,7 @@ import db from '.';
 
 interface IAccount {
   id: number;
-  balance: number;
+  balance?: number;
 }
 
 type IAccountCreationAttrs = Omit<IAccount, 'id'>;
