@@ -1,7 +1,7 @@
 import { NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { IUser } from '../../database/models/User';
-import ITokenPayload from '../../interfaces/ITokenPayload';
+import { ITokenPayload } from '../../interfaces';
 
 const SECRET = process.env.SECRET || 'jwt_secret';
 
