@@ -11,6 +11,11 @@ const nameSchema = Joi.string().min(2).required().messages({
   'string.min': 'O nome precisa ter no mínimo 2 caracteres',
 });
 
+const emailSchema = Joi.string().email().required().messages({
+  'any.required': REQUIRED_MSG,
+  'string.email': 'Email inválido',
+});
+
 const cpfSchema = Joi.document().cpf().required().messages({
   'any.required': REQUIRED_MSG,
 });
@@ -21,24 +26,25 @@ const passwordSchema = Joi.string().min(4).required().messages({
 });
 
 export const loginSchema = Joi.object({
-  cpf: cpfSchema,
+  email: emailSchema,
   password: passwordSchema,
 });
 
 export const registerSchema = Joi.object({
   name: nameSchema,
+  email: emailSchema,
   cpf: cpfSchema,
   password: passwordSchema,
 });
 
 export const transactionSchema = Joi.object({
-  receiverAccountId: Joi.integer().required().messages({
+  receiverAccountId: Joi.number().required().messages({
     'any.required': REQUIRED_MSG,
   }),
-  value: Joi.integer().min(0.01).max(2000).required()
+  value: Joi.number().min(0.01).max(2000).required()
     .messages({
       'any.required': REQUIRED_MSG,
-      'integer.min': 'O valor mínimo exigido é de R$0,01',
-      'integer.max': 'O valor máximo permitido é de R$2000,00',
+      'number.min': 'O valor mínimo exigido é de R$0,01',
+      'number.max': 'O valor máximo permitido é de R$2000,00',
     }),
 });

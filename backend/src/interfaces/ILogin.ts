@@ -1,4 +1,4 @@
 export default interface ILogin {
-  cpf: string;
+  email: string;
   password: string;
 }

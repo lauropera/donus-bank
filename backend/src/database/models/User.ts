@@ -5,6 +5,7 @@ import Account from './Account';
 interface IUser {
   id: number;
   name: string;
+  email: string;
   cpf: string;
   password: string;
   accountId: number;
@@ -17,6 +18,7 @@ type IUserReturned = Omit<IUser, 'password'>;
 class User extends Sequelize.Model<IUser, IUserCreation> {
   declare id: number;
   declare name: string;
+  declare email: string;
   declare cpf: string;
   declare accountId: number;
   declare password: string;
@@ -31,6 +33,7 @@ User.init(
       autoIncrement: true,
     },
     name: Sequelize.STRING,
+    email: Sequelize.STRING,
     cpf: Sequelize.STRING,
     password: Sequelize.STRING,
     accountId: Sequelize.INTEGER,

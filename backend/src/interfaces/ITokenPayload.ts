@@ -4,5 +4,6 @@ export default interface ITokenPayload extends JwtPayload {
   data: {
     id: number;
     name: string;
+    email: string;
   }
 }

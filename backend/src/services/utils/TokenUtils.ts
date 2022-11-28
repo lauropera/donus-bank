@@ -6,8 +6,8 @@ import { ITokenPayload } from '../../interfaces';
 const SECRET = process.env.SECRET || 'jwt_secret';
 
 class Token {
-  static generate({ id, name }: IUser): string {
-    return jwt.sign({ data: { id, name } }, SECRET, {
+  static generate({ id, name, email }: IUser): string {
+    return jwt.sign({ data: { id, name, email } }, SECRET, {
       algorithm: 'HS256',
       expiresIn: '24h',
     });

@@ -24,9 +24,15 @@ class UserService {
   async login(credentials: ILogin): Promise<string> {
     UserService.validateCredentials(loginSchema, credentials);
 
-    const user = await this._model.findOne({ where: { cpf: credentials.cpf } });
+    const user = await this._model.findOne({
+      where: { email: credentials.email },
+    });
+
     if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
-      throw new HttpException(401, 'CPF ou senha inválidos');
+      throw new HttpException(
+        401,
+        !user ? 'Email não cadastrado' : 'Email ou senha inválidos',
+      );
     }
 
     const token = await this._tokenUtils.generate(user);
