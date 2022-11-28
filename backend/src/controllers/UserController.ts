@@ -21,7 +21,7 @@ class UserController {
     await this._service.register(req.body);
     res
       .status(StatusCodes.CREATED)
-      .json({ message: 'Usuário registrado com sucesso' });
+      .json({ message: 'Usuário cadastrado com sucesso' });
   }
 }
 
