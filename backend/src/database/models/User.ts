@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import db from '.';
+import Account from './Account';
 
 interface IUser {
   id: number;
@@ -35,6 +36,16 @@ User.init(
     underscored: true,
   },
 );
+
+User.hasOne(Account, {
+  foreignKey: 'accountId',
+  as: 'account',
+});
+
+Account.belongsTo(User, {
+  foreignKey: 'accountId',
+  as: 'user',
+});
 
 export default User;
 export { IUser, IUserCreationAttrs };
