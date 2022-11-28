@@ -6,10 +6,13 @@ interface IUser {
   id: number;
   name: string;
   cpf: string;
+  password: string;
   accountId: number;
 }
 
 type IUserCreationAttrs = Omit<IUser, 'id, accountId'>;
+
+type IUserReturned = Omit<IUser, 'password'>;
 
 class User extends Sequelize.Model<IUser, IUserCreationAttrs> {
   declare id: number;
@@ -28,6 +31,7 @@ User.init(
     },
     name: Sequelize.STRING,
     cpf: Sequelize.STRING,
+    password: Sequelize.STRING,
     accountId: Sequelize.INTEGER,
   },
   {
@@ -48,4 +52,4 @@ Account.belongsTo(User, {
 });
 
 export default User;
-export { IUser, IUserCreationAttrs };
+export { IUser, IUserCreationAttrs, IUserReturned };
