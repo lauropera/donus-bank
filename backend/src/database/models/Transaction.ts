@@ -38,8 +38,8 @@ Transaction.init(
   },
   {
     sequelize: db,
-    timestamps: false,
     tableName: 'Transactions',
+    updatedAt: false,
     underscored: true,
   },
 );
