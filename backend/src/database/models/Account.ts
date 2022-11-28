@@ -26,6 +26,7 @@ Account.init(
   {
     sequelize: db,
     timestamps: false,
+    tableName: 'Accounts',
     underscored: true,
   },
 );

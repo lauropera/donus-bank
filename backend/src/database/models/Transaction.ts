@@ -6,9 +6,10 @@ interface ITransaction {
   ownerAccountId: number;
   receiverAccountId: number;
   value: number;
+  createdAt: Date;
 }
 
-type ITransactionCreationAttrs = Omit<ITransaction, 'id'>;
+type ITransactionCreationAttrs = Omit<ITransaction, 'id, createdAt'>;
 
 class Transaction extends Sequelize.Model<
 ITransaction,
@@ -18,6 +19,7 @@ ITransactionCreationAttrs
   declare ownerAccountId: number;
   declare receiverAccountId: number;
   declare value: number;
+  declare createdAt: Date;
 }
 
 Transaction.init(
@@ -31,10 +33,12 @@ Transaction.init(
     ownerAccountId: Sequelize.INTEGER,
     receiverAccountId: Sequelize.INTEGER,
     value: Sequelize.INTEGER,
+    createdAt: Sequelize.DATE,
   },
   {
     sequelize: db,
     timestamps: false,
+    tableName: 'Transactions',
     underscored: true,
   },
 );
