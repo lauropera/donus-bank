@@ -1,3 +1,4 @@
 import UserService from './UserService';
+import TransactionService from './TransactionService';
 
-export { UserService };
+export { UserService, TransactionService };
