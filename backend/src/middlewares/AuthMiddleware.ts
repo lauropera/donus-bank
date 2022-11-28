@@ -3,11 +3,11 @@ import Token from '../services/utils/TokenUtils';
 
 async function authMiddleware(
   req: Request,
-  _res: Response,
+  res: Response,
   next: NextFunction,
 ): Promise<void> {
   const token: string = req.headers.authorization || '';
-  req.body.user = await Token.authenticate(token, next);
+  res.locals.user = await Token.authenticate(token, next);
   next();
 }
 

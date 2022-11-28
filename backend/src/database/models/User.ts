@@ -11,7 +11,7 @@ interface IUser {
   accountId: number;
 }
 
-type IUserCreation = Omit<IUser, 'id, accountId'>;
+type IUserCreation = Omit<IUser, 'id'>;
 
 type IUserReturned = Omit<IUser, 'password'>;
 

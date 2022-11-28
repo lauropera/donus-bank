@@ -5,6 +5,7 @@ import validator from 'cpf-cnpj-validator';
 const Joi = joi.extend(validator);
 
 const REQUIRED_MSG = 'Campos obrigatórios faltando';
+const EMAIL_MSG = 'Email inválido';
 
 const nameSchema = Joi.string().min(2).required().messages({
   'any.required': REQUIRED_MSG,
@@ -13,7 +14,7 @@ const nameSchema = Joi.string().min(2).required().messages({
 
 const emailSchema = Joi.string().email().required().messages({
   'any.required': REQUIRED_MSG,
-  'string.email': 'Email inválido',
+  'string.email': EMAIL_MSG,
 });
 
 const cpfSchema = Joi.document().cpf().required().messages({
@@ -38,8 +39,11 @@ export const registerSchema = Joi.object({
 });
 
 export const transactionSchema = Joi.object({
-  receiverAccountId: Joi.number().required().messages({
-    'any.required': REQUIRED_MSG,
+  email: Joi.string().email().messages({
+    'string.email': EMAIL_MSG,
+  }),
+  cpf: Joi.document().cpf().messages({
+    'string.cpf': 'CPF inválido',
   }),
   value: Joi.number().min(0.01).max(2000).required()
     .messages({

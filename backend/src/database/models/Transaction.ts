@@ -10,7 +10,15 @@ interface ITransaction {
   createdAt: Date;
 }
 
-type ITransactionCreation = Omit<ITransaction, 'id, createdAt'>;
+type TransactionType = 'cpf' | 'email';
+
+interface ITransactionCreation {
+  email?: string;
+  cpf?: string;
+  ownerAccountId: number;
+  receiverAccountId: number;
+  value: number;
+}
 
 class Transaction extends Sequelize.Model<ITransaction, ITransactionCreation> {
   declare id: number;
@@ -55,4 +63,4 @@ Account.hasMany(Transaction, { foreignKey: 'ownerAccountId' });
 Account.hasMany(Transaction, { foreignKey: 'receiverAccountId' });
 
 export default Transaction;
-export { ITransaction, ITransactionCreation };
+export { ITransaction, ITransactionCreation, TransactionType };
