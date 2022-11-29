@@ -1,6 +1,6 @@
 import { string, shape } from 'prop-types';
 
-function FormInput({ labelText, name, id, errors, type, registerInput }) {
+function FormInput({ labelText, name, id, type, errors, registerInput }) {
   return (
     <div>
       <label className='block mb-2 font-medium text-slate-900' htmlFor={id}>
