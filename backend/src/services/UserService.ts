@@ -4,7 +4,7 @@ import db from '../database/models';
 import { ILogin, IRegister } from '../interfaces';
 import { loginSchema, registerSchema } from './utils/validations/schemas';
 import HttpException from '../utils/HttpException';
-import User from '../database/models/User';
+import User, { IUser } from '../database/models/User';
 import Token from './utils/TokenUtils';
 import Account from '../database/models/Account';
 
@@ -66,6 +66,17 @@ class UserService {
       transaction.rollback();
       throw new HttpException(400, 'Houve um problema ao cadastrar o usuário');
     }
+  }
+
+  async getUser(id: number): Promise<IUser> {
+    const user = await this._model.findOne({
+      attributes: { exclude: ['password', 'accountId'] },
+      include: [{ model: Account, as: 'account' }],
+      where: { id },
+    });
+
+    if (!user) throw new HttpException(404, 'Usuário não encontrado');
+    return user;
   }
 }
 

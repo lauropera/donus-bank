@@ -10,6 +10,7 @@ class UserController {
 
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
 
   async login(req: Request, res: Response): Promise<void> {
@@ -22,6 +23,13 @@ class UserController {
     res
       .status(StatusCodes.CREATED)
       .json({ message: 'Usuário cadastrado com sucesso' });
+  }
+
+  async getUser(_req: Request, res: Response): Promise<void> {
+    const { data: { id } } = res.locals.user;
+
+    const user = await this._service.getUser(id);
+    res.status(StatusCodes.OK).json(user);
   }
 }
 
