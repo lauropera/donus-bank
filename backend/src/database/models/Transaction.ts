@@ -11,6 +11,7 @@ interface ITransaction {
 }
 
 type TransactionType = 'cpf' | 'email';
+type TransactionFilter = 'sent' | 'received' | 'date';
 
 interface ITransactionCreation {
   email?: string;
@@ -63,4 +64,9 @@ Account.hasMany(Transaction, { foreignKey: 'ownerAccountId' });
 Account.hasMany(Transaction, { foreignKey: 'receiverAccountId' });
 
 export default Transaction;
-export { ITransaction, ITransactionCreation, TransactionType };
+export {
+  ITransaction,
+  ITransactionCreation,
+  TransactionType,
+  TransactionFilter,
+};

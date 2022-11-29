@@ -1,13 +1,16 @@
+import { Op } from 'sequelize';
 import db from '../database/models';
 import HttpException from '../utils/HttpException';
 import Account from '../database/models/Account';
 import Transaction, {
   ITransaction,
   ITransactionCreation,
+  TransactionFilter,
   TransactionType,
 } from '../database/models/Transaction';
 import { transactionSchema } from './utils/validations/schemas';
 import User from '../database/models/User';
+import IDateFilter from '../interfaces/IDateFilter';
 
 class TransactionService {
   private _model = Transaction;
@@ -19,7 +22,33 @@ class TransactionService {
     if (error) throw new HttpException(400, error.message);
   }
 
-  async getAll(ownerAccountId: number): Promise<ITransaction[]> {
+  private static setFilter(
+    id: number,
+    filter: TransactionFilter,
+    dateToFilter: IDateFilter | undefined
+  ): any {
+    if (filter === 'sent') return { ownerAccountId: id };
+    if (filter === 'received') return { receiverAccountId: id };
+    if (filter === 'date') {
+      const starts = dateToFilter?.starts ? dateToFilter?.starts : '0';
+      const ends = dateToFilter?.ends ? dateToFilter?.ends : Date.now();
+      return {
+        createdAt: { [Op.between]: [starts, ends] },
+      };
+    }
+  }
+
+  async getAll(
+    ownerAccountId: number,
+    filterOption: TransactionFilter,
+    dateToFilter: IDateFilter | undefined
+  ): Promise<ITransaction[]> {
+    const filter = TransactionService.setFilter(
+      ownerAccountId,
+      filterOption,
+      dateToFilter
+    );
+
     const transactions = await this._model.findAll({
       attributes: {
         exclude: ['ownerAccountId', 'receiverAccountId'],
@@ -28,7 +57,7 @@ class TransactionService {
         { model: Account, as: 'ownerAccount' },
         { model: Account, as: 'receiverAccount' },
       ],
-      where: { ownerAccountId },
+      where: { ...filter },
     });
 
     return transactions;
@@ -37,7 +66,7 @@ class TransactionService {
   async insert(
     userId: number,
     transferType: TransactionType,
-    transactionData: ITransactionCreation,
+    transactionData: ITransactionCreation
   ): Promise<void> {
     TransactionService.validateTransaction(transactionData);
 
@@ -47,23 +76,23 @@ class TransactionService {
     });
 
     const ownerAccount = await this._accountModel.findByPk(
-      ownerUser?.accountId,
+      ownerUser?.accountId
     );
     const receiverAccount = await this._accountModel.findByPk(
-      receiverUser?.accountId,
+      receiverUser?.accountId
     );
 
     if (!ownerAccount || !receiverAccount) {
       throw new HttpException(
         404,
-        `Dados inválidos, verifique se o ${transferType} está correto`,
+        `Dados inválidos, verifique se o ${transferType} está correto`
       );
     }
 
     if (ownerAccount.id === receiverAccount.id) {
       throw new HttpException(
         422,
-        'Não é possível fazer uma transferência para si mesmo',
+        'Não é possível fazer uma transferência para si mesmo'
       );
     }
 
@@ -79,17 +108,17 @@ class TransactionService {
           receiverAccountId: receiverAccount.id,
           value: transactionData.value,
         },
-        { transaction },
+        { transaction }
       );
 
       await this._accountModel.update(
         { balance: ownerAccount.balance - transactionData.value },
-        { where: { id: ownerAccount.id }, transaction },
+        { where: { id: ownerAccount.id }, transaction }
       );
 
       await this._accountModel.update(
         { balance: receiverAccount.balance + transactionData.value },
-        { where: { id: receiverAccount.id }, transaction },
+        { where: { id: receiverAccount.id }, transaction }
       );
 
       transaction.commit();

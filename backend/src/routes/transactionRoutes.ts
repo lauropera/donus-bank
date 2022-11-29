@@ -6,7 +6,8 @@ import authMiddleware from '../middlewares/AuthMiddleware';
 const router = Router();
 
 router.use(authMiddleware);
-router.get('/', transactionController.listAll);
+
+router.get('/all', transactionController.listAll);
 router.post('/new', transactionController.create);
 
 export default router;
