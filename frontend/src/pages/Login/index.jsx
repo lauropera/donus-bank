@@ -3,13 +3,14 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import donusLogo from '../../assets/logo.png';
+import FormInput from '../../components/FormInput';
 
 const loginSchema = yup.object().shape({
   email: yup.string().email('Email inválido').required('O email é obrigatório'),
   password: yup
     .string()
     .min(4, 'A senha precisa ter no mínimo 4 caracteres')
-    .required(),
+    .required('A senha é obrigatória'),
 });
 
 function Login() {
@@ -38,42 +39,23 @@ function Login() {
           </header>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label
-                className='block mb-2 font-medium text-slate-900'
-                htmlFor='email'
-              >
-                Email
-              </label>
-              <input
-                className={`w-full p-2 mb-3 text-slate-900 border-b-2
-                border-emerald-600 outline-none focus:bg-gray-300 transition-all`}
-                type='text'
-                name='email'
-                id='email'
-                {...register('email')}
-              />
-              <p className='mb-3 text-red-600'>{errors.email?.message}</p>
-            </div>
+            <FormInput
+              labelText='Email'
+              name='email'
+              id='email'
+              type='text'
+              errors={errors}
+              registerInput={{ ...register('email') }}
+            />
 
-            <div>
-              <label
-                className='block mb-2 font-medium text-slate-900'
-                htmlFor='password'
-              >
-                Senha
-              </label>
-              <input
-                className={`w-full p-2 mb-3 text-slate-900 border-b-2
-                border-emerald-600 outline-none focus:bg-gray-300
-                transition-all`}
-                type='password'
-                name='password'
-                id='password'
-                {...register('password')}
-              />
-              <p className='mb-3 text-red-600'>{errors.password?.message}</p>
-            </div>
+            <FormInput
+              labelText='Senha'
+              name='password'
+              id='password'
+              type='password'
+              errors={errors}
+              registerInput={{ ...register('password') }}
+            />
 
             <div>
               <button
