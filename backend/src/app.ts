@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import authRoutes from './routes/authRoutes';
 import transactionRoutes from './routes/transactionRoutes';
@@ -11,6 +12,7 @@ class App {
 
     this.config();
 
+    this.app.use(cors());
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }
 
