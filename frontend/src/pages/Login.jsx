@@ -40,7 +40,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className='font-body'>
       <main className='flex h-screen bg-emerald-600'>
         <div className='w-full max-w-xs m-auto bg-slate-100 rounded p-5'>
           <header>
