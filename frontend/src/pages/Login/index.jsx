@@ -1,13 +1,25 @@
 import React from 'react';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import donusLogo from '../../assets/logo.png';
+
+const loginSchema = yup.object().shape({
+  email: yup.string().email('Email inválido').required('O email é obrigatório'),
+  password: yup
+    .string()
+    .min(4, 'A senha precisa ter no mínimo 4 caracteres')
+    .required(),
+});
 
 function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
 
   const onSubmit = (data) => {
     console.log(data);
@@ -34,13 +46,14 @@ function Login() {
                 Email
               </label>
               <input
-                className={`w-full p-2 mb-6 text-slate-900 border-b-2
+                className={`w-full p-2 mb-3 text-slate-900 border-b-2
                 border-emerald-600 outline-none focus:bg-gray-300 transition-all`}
                 type='text'
                 name='email'
                 id='email'
                 {...register('email')}
               />
+              <p className='mb-3 text-red-600'>{errors.email?.message}</p>
             </div>
 
             <div>
@@ -51,13 +64,15 @@ function Login() {
                 Senha
               </label>
               <input
-                className={`w-full p-2 mb-6 text-slate-900 border-b-2
-                border-emerald-600 outline-none focus:bg-gray-300 transition-all`}
+                className={`w-full p-2 mb-3 text-slate-900 border-b-2
+                border-emerald-600 outline-none focus:bg-gray-300
+                transition-all`}
                 type='password'
                 name='password'
                 id='password'
                 {...register('password')}
               />
+              <p className='mb-3 text-red-600'>{errors.password?.message}</p>
             </div>
 
             <div>
@@ -75,7 +90,8 @@ function Login() {
             <button
               className={`w-full border-2 text-emerald-600 border-emerald-600
                 hover:bg-emerald-900 hover:border-emerald-900
-                hover:text-white text-sm font-bold py-2 px-4 mb-6 rounded transition-all`}
+                hover:text-white text-sm font-bold py-2 px-4 mb-6
+                rounded transition-all`}
               type='button'
             >
               Criar conta
