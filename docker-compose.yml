@@ -2,11 +2,14 @@ version: '3.9'
 
 services:
   frontend:
+    container_name: app_frontend
     build: ./frontend
     ports:
       - 3000:3000
     platform: linux/x86_64
     working_dir: /app-frontend
+    volumes:
+      - ./frontend/src:/app-frontend/src
     depends_on:
       backend:
         condition: service_healthy
