@@ -1,9 +1,11 @@
-import React from 'react';
+import { useContext, useState } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import donusLogo from '../../assets/logo.png';
-import FormInput from '../../components/FormInput';
+import { requestLogin } from '../services/requests';
+import FormInput from '../components/FormInput';
+import AuthContext from '../context/AuthProvider';
+import donusLogo from '../assets/logo.png';
 
 const loginSchema = yup.object().shape({
   email: yup.string().email('Email inválido').required('O email é obrigatório'),
@@ -14,6 +16,8 @@ const loginSchema = yup.object().shape({
 });
 
 function Login() {
+  const { setAuth } = useContext(AuthContext);
+  const [loginFail, setLoginFail] = useState(false);
   const {
     register,
     handleSubmit,
@@ -22,8 +26,14 @@ function Login() {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (values) => {
+    try {
+      const data = await requestLogin(values);
+      setAuth(data.token);
+    } catch (error) {
+      setLoginFail(true);
+      console.error(error.message);
+    }
   };
 
   return (
@@ -47,7 +57,6 @@ function Login() {
               errors={errors}
               registerInput={{ ...register('email') }}
             />
-
             <FormInput
               labelText='Senha'
               name='password'
@@ -56,7 +65,6 @@ function Login() {
               errors={errors}
               registerInput={{ ...register('password') }}
             />
-
             <div>
               <button
                 className={`w-full bg-emerald-600 hover:bg-emerald-900
@@ -65,6 +73,9 @@ function Login() {
               >
                 Enviar
               </button>
+              {loginFail && (
+                <p className='mb-3 text-red-600'>Email ou senha incorretos</p>
+              )}
             </div>
           </form>
 

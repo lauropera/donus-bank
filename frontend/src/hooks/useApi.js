@@ -1,17 +1,13 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { api } from '../lib/axios';
 
-const api = axios.create({
-  baseURL: process.env.API_URL || 'http://localhost:3001'
-});
-
-export function useApi(url) {
+export function useApi(method, url, body = {}) {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
     api
-      .get(url)
+      [method](url, body)
       .then((response) => {
         setData(response.data);
       })

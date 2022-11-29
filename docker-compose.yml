@@ -9,12 +9,12 @@ services:
     platform: linux/x86_64
     working_dir: /app-frontend
     volumes:
-      - ./frontend/src:/app-frontend/src
+      - ./frontend:/app-frontend
     depends_on:
       backend:
         condition: service_healthy
     environment:
-      - API_URL=http://localhost:3001
+      - REACT_APP_API_URL=http://localhost:3001
     healthcheck:
       test: [ "CMD", "lsof", "-t", "-i:3000" ]
       timeout: 10s
