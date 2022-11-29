@@ -1,5 +1,6 @@
-import { IUserCreation } from '../database/models/User';
-
-export default interface IRegister extends IUserCreation {
+export default interface IRegister {
+  name: string;
+  email: string;
+  cpf: string;
   password: string;
 }
