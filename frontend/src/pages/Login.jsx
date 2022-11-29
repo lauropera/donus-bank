@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import * as yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { requestLogin } from '../services/requests';
@@ -16,6 +17,7 @@ const loginSchema = yup.object().shape({
 });
 
 function Login() {
+  const navigate = useNavigate();
   const { setAuth } = useContext(AuthContext);
   const [loginFail, setLoginFail] = useState(false);
   const {
@@ -30,6 +32,7 @@ function Login() {
     try {
       const data = await requestLogin(values);
       setAuth(data.token);
+      navigate('/transactions');
     } catch (error) {
       setLoginFail(true);
       console.error(error.message);
@@ -57,6 +60,7 @@ function Login() {
               errors={errors}
               registerInput={{ ...register('email') }}
             />
+
             <FormInput
               labelText='Senha'
               name='password'
@@ -65,6 +69,7 @@ function Login() {
               errors={errors}
               registerInput={{ ...register('password') }}
             />
+
             <div>
               <button
                 className={`w-full bg-emerald-600 hover:bg-emerald-900
@@ -86,6 +91,7 @@ function Login() {
                 hover:text-white text-sm font-bold py-2 px-4 mb-6
                 rounded transition-all`}
               type='button'
+              onClick={() => navigate('/register')}
             >
               Criar conta
             </button>
