@@ -1,14 +1,14 @@
 import { Op } from 'sequelize';
 import db from '../database/models';
 import HttpException from '../utils/HttpException';
-import Account from '../database/models/Account';
+import Account, { IAccountCreation } from '../database/models/Account';
 import Transaction, {
   ITransaction,
   ITransactionCreation,
   TransactionFilter,
   TransactionType,
 } from '../database/models/Transaction';
-import { transactionSchema } from './utils/validations/schemas';
+import { depositSchema, transactionSchema } from './utils/validations/schemas';
 import User from '../database/models/User';
 import IDateFilter from '../interfaces/IDateFilter';
 import Token from './utils/TokenUtils';
@@ -133,6 +133,24 @@ class TransactionService {
       transaction.rollback();
       throw new HttpException(400, 'Houve um problema ao realizar a transação');
     }
+  }
+
+  async deposit(token: string, quantity: IAccountCreation): Promise<void> {
+    const authenticated = await Token.authenticate(token);
+    const id = authenticated?.data?.id as number;
+
+    const validation = depositSchema.validate(quantity);
+    if (validation.error || !quantity.balance) {
+      throw new HttpException(400, validation.error.message);
+    }
+
+    const userAccount = await this._accountModel.findByPk(id);
+    if (!userAccount) throw new HttpException(404, 'Conta não encontrada');
+
+    await this._accountModel.update(
+      { balance: userAccount.balance + quantity.balance },
+      { where: { id } }
+    );
   }
 }
 

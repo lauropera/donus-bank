@@ -6,6 +6,7 @@ const Joi = joi.extend(validator);
 
 const REQUIRED_MSG = 'Campos obrigatórios faltando';
 const EMAIL_MSG = 'Email inválido';
+const MIN_MSG = 'O valor mínimo exigido é de R$0,01';
 
 const nameSchema = Joi.string().min(2).required().messages({
   'any.required': REQUIRED_MSG,
@@ -48,7 +49,15 @@ export const transactionSchema = Joi.object({
   value: Joi.number().min(0.01).max(2000).required()
     .messages({
       'any.required': REQUIRED_MSG,
-      'number.min': 'O valor mínimo exigido é de R$0,01',
-      'number.max': 'O valor máximo permitido é de R$2000,00',
+      'number.min': MIN_MSG,
+    }),
+});
+
+export const depositSchema = Joi.object({
+  balance: Joi.number().min(0.01).max(2000).required()
+    .messages({
+      'any.required': REQUIRED_MSG,
+      'number.min': MIN_MSG,
+      'number.max': 'O valor máximo de depósito permitido é de R$2000,00',
     }),
 });

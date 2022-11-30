@@ -14,6 +14,7 @@ class TransactionController {
 
     this.listAll = this.listAll.bind(this);
     this.create = this.create.bind(this);
+    this.deposit = this.deposit.bind(this);
   }
 
   async listAll(req: Request, res: Response): Promise<void> {
@@ -44,6 +45,15 @@ class TransactionController {
     res
       .status(StatusCodes.CREATED)
       .json({ message: 'Transação realizada com sucesso' });
+  }
+
+  async deposit(req: Request, res: Response): Promise<void> {
+    const token = req.headers.authorization || '';
+
+    await this._service.deposit(token, req.body);
+    res
+      .status(StatusCodes.OK)
+      .json({ message: 'Depósito realizado com sucesso' });
   }
 }
 
