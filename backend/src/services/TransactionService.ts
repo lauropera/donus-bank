@@ -1,17 +1,23 @@
 import { Op } from 'sequelize';
 import db from '../database/models';
+import Token from './utils/TokenUtils';
 import HttpException from '../utils/HttpException';
+import { depositSchema, transactionSchema } from './utils/validations/schemas';
+
+import User from '../database/models/User';
+import Transaction from '../database/models/Transaction';
+import TransactionType from '../database/models/TransactionType';
 import Account, { IAccountCreation } from '../database/models/Account';
-import Transaction, {
-  ITransaction,
+
+import IDateFilter from '../interfaces/IDateFilter';
+import ITransaction, {
   ITransactionCreation,
   TransactionFilter,
-  TransactionType,
-} from '../database/models/Transaction';
-import { depositSchema, transactionSchema } from './utils/validations/schemas';
-import User from '../database/models/User';
-import IDateFilter from '../interfaces/IDateFilter';
-import Token from './utils/TokenUtils';
+  TransactionMethod,
+} from '../interfaces/ITransaction';
+
+const DEPOSIT_TYPE_ID = 1;
+const TRANSFER_TYPE_ID = 2;
 
 class TransactionService {
   private _model = Transaction;
@@ -44,8 +50,7 @@ class TransactionService {
     filterOption: TransactionFilter,
     dateToFilter: IDateFilter | undefined
   ): Promise<ITransaction[]> {
-    const authenticated = await Token.authenticate(token);
-    const userId = authenticated?.data?.id as number;
+    const { id: userId } = await Token.authenticate(token);
 
     const filter = TransactionService.setFilter(
       userId,
@@ -60,6 +65,7 @@ class TransactionService {
       include: [
         { model: Account, as: 'ownerAccount' },
         { model: Account, as: 'receiverAccount' },
+        { model: TransactionType, as: 'transactionType' },
       ],
       where: { ...filter },
     });
@@ -69,15 +75,14 @@ class TransactionService {
 
   async insert(
     token: string,
-    transferType: TransactionType,
+    transferType: TransactionMethod,
     transactionData: ITransactionCreation
   ): Promise<void> {
-    const authenticated = await Token.authenticate(token);
-    const userId = authenticated?.data?.id as number;
+    const { id } = await Token.authenticate(token);
 
     TransactionService.validateTransaction(transactionData);
 
-    const ownerUser = await this._userModel.findByPk(userId);
+    const ownerUser = await this._userModel.findByPk(id);
     const receiverUser = await this._userModel.findOne({
       where: { [transferType]: transactionData[transferType] },
     });
@@ -113,6 +118,7 @@ class TransactionService {
         {
           ownerAccountId: ownerAccount.id,
           receiverAccountId: receiverAccount.id,
+          transactionTypeId: TRANSFER_TYPE_ID,
           value: transactionData.value,
         },
         { transaction }
@@ -136,8 +142,7 @@ class TransactionService {
   }
 
   async deposit(token: string, quantity: IAccountCreation): Promise<void> {
-    const authenticated = await Token.authenticate(token);
-    const id = authenticated?.data?.id as number;
+    const { id } = await Token.authenticate(token);
 
     const validation = depositSchema.validate(quantity);
     if (validation.error || !quantity.balance) {
@@ -147,10 +152,28 @@ class TransactionService {
     const userAccount = await this._accountModel.findByPk(id);
     if (!userAccount) throw new HttpException(404, 'Conta não encontrada');
 
-    await this._accountModel.update(
-      { balance: userAccount.balance + quantity.balance },
-      { where: { id } }
-    );
+    const transaction = await db.transaction();
+    try {
+      await this._model.create(
+        {
+          ownerAccountId: id,
+          receiverAccountId: id,
+          transactionTypeId: DEPOSIT_TYPE_ID,
+          value: quantity.balance,
+        },
+        { transaction }
+      );
+
+      await this._accountModel.update(
+        { balance: userAccount.balance + quantity.balance },
+        { where: { id }, transaction }
+      );
+
+      transaction.commit();
+    } catch (error) {
+      transaction.rollback();
+      throw new HttpException(400, 'Houve um problema ao realizar a transação');
+    }
   }
 }
 

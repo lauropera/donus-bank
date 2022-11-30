@@ -1,15 +1,11 @@
 import Sequelize from 'sequelize';
 import db from '.';
 import Transaction from './Transaction';
+import ITransactionType, {
+  ITransactionTypeCreation,
+} from '../../interfaces/ITransactionType';
 
-interface ITransactionType {
-  id: number;
-  name: string;
-}
-
-type ITransactionTypeCreation = Omit<ITransactionType, 'id'>;
-
-class TransactionTypes extends Sequelize.Model<
+class TransactionType extends Sequelize.Model<
 ITransactionType,
 ITransactionTypeCreation
 > {
@@ -17,7 +13,7 @@ ITransactionTypeCreation
   declare balance: number;
 }
 
-TransactionTypes.init(
+TransactionType.init(
   {
     id: {
       type: Sequelize.INTEGER,
@@ -34,15 +30,11 @@ TransactionTypes.init(
   },
 );
 
-TransactionTypes.hasMany(Transaction, {
-  foreignKey: 'transaction_type',
-  as: 'transactions',
-});
+TransactionType.hasMany(Transaction, { foreignKey: 'transaction_type_id' });
 
-Transaction.belongsTo(TransactionTypes, {
-  foreignKey: 'transaction_type',
+Transaction.belongsTo(TransactionType, {
+  foreignKey: 'transaction_type_id',
   as: 'transactionType',
 });
 
-export default TransactionTypes;
-export { ITransactionType, TransactionTypes };
+export default TransactionType;

@@ -1,19 +1,7 @@
 import Sequelize from 'sequelize';
 import db from '.';
 import Account from './Account';
-
-interface IUser {
-  id: number;
-  name: string;
-  email: string;
-  cpf: string;
-  password: string;
-  accountId: number;
-}
-
-type IUserCreation = Omit<IUser, 'id'>;
-
-type IUserReturned = Omit<IUser, 'password'>;
+import IUser, { IUserCreation } from '../../interfaces/IUser';
 
 class User extends Sequelize.Model<IUser, IUserCreation> {
   declare id: number;
@@ -50,4 +38,3 @@ User.belongsTo(Account, { foreignKey: 'accountId', as: 'account' });
 Account.hasOne(User, { foreignKey: 'accountId', as: 'user' });
 
 export default User;
-export { IUser, IUserCreation, IUserReturned };

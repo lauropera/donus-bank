@@ -1,13 +1,16 @@
 import bcrypt from 'bcryptjs';
-import { Schema } from 'joi';
 import { Op } from 'sequelize';
+import { Schema } from 'joi';
 import db from '../database/models';
-import { ILogin, IRegister } from '../interfaces';
-import { loginSchema, registerSchema } from './utils/validations/schemas';
-import HttpException from '../utils/HttpException';
-import User, { IUser } from '../database/models/User';
 import Token from './utils/TokenUtils';
+import HttpException from '../utils/HttpException';
+import { loginSchema, registerSchema } from './utils/validations/schemas';
+
+import User from '../database/models/User';
 import Account from '../database/models/Account';
+
+import IUser from '../interfaces/IUser';
+import { ILogin, IRegister } from '../interfaces';
 
 class UserService {
   private _model = User;
@@ -36,7 +39,7 @@ class UserService {
       );
     }
 
-    const token = await this._tokenUtils.generate(user);
+    const token = await this._tokenUtils.generate(user.id);
     return token;
   }
 
@@ -61,7 +64,7 @@ class UserService {
     const transaction = await db.transaction();
     try {
       const { id: accountId } = await this._accountModel.create(
-        {},
+        { balance: 0 },
         { transaction },
       );
 
@@ -78,9 +81,8 @@ class UserService {
     }
   }
 
-  async getUser(token: string): Promise<IUser> {
-    const authenticated = await this._tokenUtils.authenticate(token);
-    const id = authenticated?.data?.id as number;
+  async getUser(auth: string): Promise<IUser> {
+    const { id } = await this._tokenUtils.authenticate(auth);
 
     const user = await this._model.findOne({
       attributes: { exclude: ['password', 'accountId'] },

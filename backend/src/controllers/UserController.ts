@@ -26,9 +26,9 @@ class UserController {
   }
 
   async getUser(req: Request, res: Response): Promise<void> {
-    const token = req.headers.authorization || '';
+    const auth = req.headers.authorization || '';
 
-    const user = await this._service.getUser(token);
+    const user = await this._service.getUser(auth);
     res.status(StatusCodes.OK).json(user);
   }
 }

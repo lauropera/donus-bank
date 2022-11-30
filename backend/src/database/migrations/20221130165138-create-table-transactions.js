@@ -30,7 +30,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DOUBLE,
       },
-      transaction_type: {
+      transaction_type_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {

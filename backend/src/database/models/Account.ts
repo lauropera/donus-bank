@@ -1,12 +1,6 @@
 import Sequelize from 'sequelize';
 import db from '.';
-
-interface IAccount {
-  id: number;
-  balance?: number;
-}
-
-type IAccountCreation = Omit<IAccount, 'id'>;
+import IAccount, { IAccountCreation } from '../../interfaces/IAccount';
 
 class Account extends Sequelize.Model<IAccount, IAccountCreation> {
   declare id: number;

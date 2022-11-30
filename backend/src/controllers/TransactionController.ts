@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { TransactionService } from '../services';
 import {
   TransactionFilter,
-  TransactionType,
-} from '../database/models/Transaction';
-import { TransactionService } from '../services';
+  TransactionMethod,
+} from '../interfaces/ITransaction';
 
 class TransactionController {
   private _service: TransactionService;
@@ -20,10 +20,10 @@ class TransactionController {
   async listAll(req: Request, res: Response): Promise<void> {
     const { filter } = req.query;
 
-    const token = req.headers.authorization || '';
+    const auth = req.headers.authorization || '';
 
     const transactions = await this._service.getAll(
-      token,
+      auth,
       filter as TransactionFilter,
       req.body,
     );
@@ -32,13 +32,13 @@ class TransactionController {
   }
 
   async create(req: Request, res: Response): Promise<void> {
-    const token = req.headers.authorization || '';
+    const auth = req.headers.authorization || '';
 
     const { transferType } = req.query;
 
     await this._service.insert(
-      token,
-      transferType as TransactionType,
+      auth,
+      transferType as TransactionMethod,
       req.body,
     );
 
@@ -48,9 +48,9 @@ class TransactionController {
   }
 
   async deposit(req: Request, res: Response): Promise<void> {
-    const token = req.headers.authorization || '';
+    const auth = req.headers.authorization || '';
 
-    await this._service.deposit(token, req.body);
+    await this._service.deposit(auth, req.body);
     res
       .status(StatusCodes.OK)
       .json({ message: 'Depósito realizado com sucesso' });

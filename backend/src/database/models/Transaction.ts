@@ -1,31 +1,16 @@
 import Sequelize from 'sequelize';
+import ITransaction, {
+  ITransactionCreation,
+} from '../../interfaces/ITransaction';
 import db from '.';
 import Account from './Account';
-
-interface ITransaction {
-  id: number;
-  ownerAccountId: number;
-  receiverAccountId: number;
-  value: number;
-  createdAt: Date;
-}
-
-type TransactionType = 'cpf' | 'email';
-type TransactionFilter = 'sent' | 'received' | 'date';
-
-interface ITransactionCreation {
-  email?: string;
-  cpf?: string;
-  ownerAccountId: number;
-  receiverAccountId: number;
-  value: number;
-}
 
 class Transaction extends Sequelize.Model<ITransaction, ITransactionCreation> {
   declare id: number;
   declare ownerAccountId: number;
   declare receiverAccountId: number;
   declare value: number;
+  declare transactionTypeId: number;
   declare createdAt: Date;
 }
 
@@ -40,6 +25,7 @@ Transaction.init(
     ownerAccountId: Sequelize.INTEGER,
     receiverAccountId: Sequelize.INTEGER,
     value: Sequelize.INTEGER,
+    transactionTypeId: Sequelize.INTEGER,
     createdAt: Sequelize.DATE,
   },
   {
@@ -64,9 +50,3 @@ Account.hasMany(Transaction, { foreignKey: 'ownerAccountId' });
 Account.hasMany(Transaction, { foreignKey: 'receiverAccountId' });
 
 export default Transaction;
-export {
-  ITransaction,
-  ITransactionCreation,
-  TransactionType,
-  TransactionFilter,
-};
