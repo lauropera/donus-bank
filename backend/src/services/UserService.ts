@@ -78,7 +78,10 @@ class UserService {
     }
   }
 
-  async getUser(id: number): Promise<IUser> {
+  async getUser(token: string): Promise<IUser> {
+    const authenticated = await this._tokenUtils.authenticate(token);
+    const id = authenticated?.data?.id as number;
+
     const user = await this._model.findOne({
       attributes: { exclude: ['password', 'accountId'] },
       include: [{ model: Account, as: 'account' }],

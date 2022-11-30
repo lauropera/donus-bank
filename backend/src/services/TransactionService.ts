@@ -11,6 +11,7 @@ import Transaction, {
 import { transactionSchema } from './utils/validations/schemas';
 import User from '../database/models/User';
 import IDateFilter from '../interfaces/IDateFilter';
+import Token from './utils/TokenUtils';
 
 class TransactionService {
   private _model = Transaction;
@@ -39,12 +40,15 @@ class TransactionService {
   }
 
   async getAll(
-    ownerAccountId: number,
+    token: string,
     filterOption: TransactionFilter,
     dateToFilter: IDateFilter | undefined
   ): Promise<ITransaction[]> {
+    const authenticated = await Token.authenticate(token);
+    const userId = authenticated?.data?.id as number;
+
     const filter = TransactionService.setFilter(
-      ownerAccountId,
+      userId,
       filterOption,
       dateToFilter
     );
@@ -64,10 +68,13 @@ class TransactionService {
   }
 
   async insert(
-    userId: number,
+    token: string,
     transferType: TransactionType,
     transactionData: ITransactionCreation
   ): Promise<void> {
+    const authenticated = await Token.authenticate(token);
+    const userId = authenticated?.data?.id as number;
+
     TransactionService.validateTransaction(transactionData);
 
     const ownerUser = await this._userModel.findByPk(userId);

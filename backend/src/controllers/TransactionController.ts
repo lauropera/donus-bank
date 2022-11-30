@@ -17,14 +17,12 @@ class TransactionController {
   }
 
   async listAll(req: Request, res: Response): Promise<void> {
-    const {
-      data: { id },
-    } = res.locals.user;
-
     const { filter } = req.query;
 
+    const token = req.headers.authorization || '';
+
     const transactions = await this._service.getAll(
-      id,
+      token,
       filter as TransactionFilter,
       req.body,
     );
@@ -33,13 +31,15 @@ class TransactionController {
   }
 
   async create(req: Request, res: Response): Promise<void> {
-    const {
-      data: { id },
-    } = res.locals.user;
+    const token = req.headers.authorization || '';
 
     const { transferType } = req.query;
 
-    await this._service.insert(id, transferType as TransactionType, req.body);
+    await this._service.insert(
+      token,
+      transferType as TransactionType,
+      req.body,
+    );
 
     res
       .status(StatusCodes.CREATED)

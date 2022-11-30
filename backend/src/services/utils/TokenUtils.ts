@@ -1,5 +1,5 @@
-import { NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
+import HttpException from '../../utils/HttpException';
 import { IUser } from '../../database/models/User';
 import { ITokenPayload } from '../../interfaces';
 
@@ -15,13 +15,13 @@ class Token {
 
   static async authenticate(
     token: string,
-    next: NextFunction,
+    // next: NextFunction,
   ): Promise<ITokenPayload | void> {
     try {
       const payload = await jwt.verify(token, SECRET);
       return payload as ITokenPayload;
     } catch (e) {
-      return next({ status: 401, message: 'Token inválido' });
+      throw new HttpException(401, 'Token inválido');
     }
   }
 }

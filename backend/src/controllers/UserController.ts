@@ -25,10 +25,10 @@ class UserController {
       .json({ message: 'Usuário cadastrado com sucesso' });
   }
 
-  async getUser(_req: Request, res: Response): Promise<void> {
-    const { data: { id } } = res.locals.user;
+  async getUser(req: Request, res: Response): Promise<void> {
+    const token = req.headers.authorization || '';
 
-    const user = await this._service.getUser(id);
+    const user = await this._service.getUser(token);
     res.status(StatusCodes.OK).json(user);
   }
 }
