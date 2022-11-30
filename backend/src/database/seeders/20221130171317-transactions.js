@@ -8,12 +8,14 @@ module.exports = {
         owner_account_id: 1,
         receiver_account_id: 2,
         value: 30.00,
+        transaction_type: 2,
         created_at: Sequelize.fn('now')
       },
       {
         owner_account_id: 1,
         receiver_account_id: 2,
         value: 11.90,
+        transaction_type: 2,
         created_at: Sequelize.fn('now')
       },
     ]);
