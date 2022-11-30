@@ -1,6 +1,6 @@
 import { string, any } from 'prop-types';
 
-function ActionButton({ color, icon, text }) {
+function ActionButton({ text, color, icon }) {
   return (
     <div
       className={`text-slate-900 font-medium
@@ -20,9 +20,9 @@ function ActionButton({ color, icon, text }) {
 }
 
 ActionButton.propTypes = {
+  text: string.isRequired,
   color: string.isRequired,
   icon: any.isRequired,
-  text: string.isRequired,
 };
 
 export default ActionButton;

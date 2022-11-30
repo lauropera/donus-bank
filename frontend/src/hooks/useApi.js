@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/axios';
 import { setToken } from '../services/requests';
+import { getToken } from '../utils/token';
 
 export function useApi(url) {
   const [errorStatus, setErrorStatus] = useState(0);
@@ -8,8 +9,7 @@ export function useApi(url) {
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
-    const tokenInStorage = localStorage.getItem('token') || '';
-    setToken(tokenInStorage);
+    setToken(getToken());
 
     api
       .get(url)

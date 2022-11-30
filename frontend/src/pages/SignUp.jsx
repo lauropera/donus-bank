@@ -48,11 +48,11 @@ function SignUp() {
   const formatCpf = (cpf) => cpf.replace(/[^0-9,]*/g, '').replace(',', '.');
 
   const redirectToLogin = () => {
-    const TWO_SECONDS = 2000;
+    const THREE_SECONDS = 3000;
     setSignedUp(true);
     setTimeout(() => {
       navigate('/');
-    }, TWO_SECONDS);
+    }, THREE_SECONDS);
   };
 
   const onSubmit = async ({ name, lastName, cpf, email, password }) => {
@@ -75,6 +75,7 @@ function SignUp() {
     <div className='font-body'>
       <main className='flex min-h-screen bg-emerald-600'>
         <SignedUpModal visible={signedUp} />
+
         <div className='w-full max-w-xs sm:max-w-sm m-auto bg-slate-100 rounded p-5'>
           <header>
             <img
@@ -152,6 +153,7 @@ function SignUp() {
               >
                 Cadastrar
               </button>
+
               {signUpErrorMsg && (
                 <p className='mb-3 text-red-600'>{signUpErrorMsg}</p>
               )}
