@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/axios';
+import { setToken } from '../services/requests';
 
-export function useApi(method, url, body = {}) {
+export function useApi(url) {
+  const [errorStatus, setErrorStatus] = useState(0);
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
+    const tokenInStorage = localStorage.getItem('token') || '';
+    setToken(tokenInStorage);
+
     api
-      [method](url, body)
+      .get(url)
       .then((response) => {
         setData(response.data);
+      })
+      .catch((error) => {
+        setErrorStatus(error.response.status);
+        console.error(error.message);
       })
       .finally(() => setIsFetching(false));
   }, []);
 
-  return { data, isFetching };
+  return { data, isFetching, errorStatus };
 }

@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { requestLogin } from '../services/requests';
+import { requestLogin, setToken } from '../services/requests';
 import FormInput from '../components/FormInput';
 import AuthContext from '../context/AuthProvider';
 import donusLogo from '../assets/logo.png';
@@ -34,8 +34,10 @@ function Login() {
 
   const onSubmit = async (values) => {
     try {
-      const data = await requestLogin(values);
-      setAuth(data.token);
+      const { token } = await requestLogin(values);
+      setAuth(token);
+      setToken(token);
+      localStorage.setItem('token', token);
     } catch (error) {
       setLoginFail(true);
       console.error(error.message);

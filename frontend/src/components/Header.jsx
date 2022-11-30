@@ -10,6 +10,7 @@ function Header({ logoutUser }) {
   const logout = () => {
     const EMPTY_TOKEN = '';
     logoutUser(EMPTY_TOKEN);
+    localStorage.removeItem('token');
     navigate('/');
   };
 
