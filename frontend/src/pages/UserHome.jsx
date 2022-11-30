@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RiWallet3Fill } from 'react-icons/ri';
 import { MdAttachMoney } from 'react-icons/md';
@@ -8,26 +8,36 @@ import { useApi } from '../hooks/useApi';
 import ActionButton from '../components/ActionButton';
 import AuthContext from '../context/AuthProvider';
 import Header from '../components/Header';
-import { getToken, removeToken } from '../utils/token';
+import { getToken, removeToken } from '../utils/tokenStorage';
+import DepositModal from '../components/DepositModal';
+
+const BAD_REQUEST_STATUS = 400;
 
 function UserHome() {
-  const { auth, setAuth } = useContext(AuthContext);
-  const { data, isFetching, errorStatus } = useApi('/auth/me');
+  const { setAuth } = useContext(AuthContext);
+  const [showModal, setShowModal] = useState({
+    deposit: false,
+    transfer: false,
+  });
+  const { data, isFetching, errorStatus, setRefresh } = useApi('/auth/me');
   const navigate = useNavigate();
 
+  const handleOnOpen = (type) => setShowModal({ ...showModal, [type]: true });
+  const handleOnClose = (type) => setShowModal({ ...showModal, [type]: false });
+
   useEffect(() => {
-    const UNAUTHORIZED_STATUS = 401;
-    if (!getToken() || errorStatus === UNAUTHORIZED_STATUS) {
+    if (!getToken() || BAD_REQUEST_STATUS === errorStatus) {
       const EMPTY_TOKEN = '';
       setAuth(EMPTY_TOKEN);
       removeToken();
       return navigate('/');
     }
-  }, []);
+  }, [errorStatus]);
 
   return (
     <div className='font-body'>
       <Header logoutUser={setAuth} />
+
       <main className='flex h-screen bg-slate-200'>
         <section
           className={`w-full m-auto max-w-xs
@@ -36,7 +46,7 @@ function UserHome() {
           <div className='h-full flex flex-col'>
             <div>
               <h1 className='text-2xl font-bold text-slate-900'>
-                {`Olá, ${!isFetching ? data?.name.split(' ')[0] : ''}`}
+                {`Olá, ${!isFetching ? data?.name?.split(' ')[0] : ''}`}
               </h1>
             </div>
 
@@ -47,7 +57,7 @@ function UserHome() {
               <div className='flex items-center gap-2'>
                 <RiWallet3Fill size={40} className='text-emerald-700' />
                 <p className='text-2xl font-bold text-slate-900'>
-                  {!isFetching && `R$${data?.account?.balance || '0,00'}`}
+                  {!isFetching && `R$${data?.account?.balance || '0.00'}`}
                 </p>
               </div>
             </div>
@@ -61,6 +71,14 @@ function UserHome() {
                 icon={
                   <MdAttachMoney alt='Icone de dinheiro' className='h-6 w-6' />
                 }
+                handleClick={() => navigate('/transactions')}
+              />
+
+              <DepositModal
+                text='Depósito'
+                visible={showModal.deposit}
+                refreshBalance={() => setRefresh(true)}
+                onClose={() => handleOnClose('deposit')}
               />
 
               <ActionButton
@@ -69,12 +87,14 @@ function UserHome() {
                 icon={
                   <BiPlus alt='Icone de sinal de mais' className='h-6 w-6' />
                 }
+                handleClick={() => handleOnOpen('deposit')}
               />
 
               <ActionButton
                 text='Enviar'
                 color='bg-cyan-600'
                 icon={<FiSend alt='Icone de envio' className='h-6 w-6' />}
+                handleClick={() => handleOnOpen('transfer')}
               />
             </div>
           </div>

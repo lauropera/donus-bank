@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
-import { setToken } from '../services/requests';
-import { getToken } from '../utils/token';
+import { setTokenHeaders } from '../services/requests';
+import { getToken } from '../utils/tokenStorage';
 
 const AuthContext = createContext({});
 
@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
     const tokenInStorage = getToken();
     if (tokenInStorage) {
       setAuth(tokenInStorage);
-      setToken(tokenInStorage);
+      setTokenHeaders(tokenInStorage);
     }
   }, []);
 

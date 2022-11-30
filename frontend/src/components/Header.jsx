@@ -3,7 +3,7 @@ import { func } from 'prop-types';
 import { IoMdExit } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import donusLogoAlt from '../assets/logo_alt.png';
-import { removeToken } from '../utils/token';
+import { removeToken } from '../utils/tokenStorage';
 
 function Header({ logoutUser }) {
   const navigate = useNavigate();

@@ -40,9 +40,12 @@ function SignUp() {
     resolver: yupResolver(signUpSchema),
   });
 
-  const cpfMask = (cpf) => {
-    cpf = cpf.replace(/[^\d]/g, '');
-    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+  const cpfMask = (event) => {
+    const { value } = event.target;
+    const formattedCpf = value
+      .replace(/[^\d]/g, '')
+      .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    return (event.target.value = formattedCpf);
   };
 
   const formatCpf = (cpf) => cpf.replace(/[^0-9,]*/g, '').replace(',', '.');
@@ -111,16 +114,9 @@ function SignUp() {
               id='cpf'
               type='text'
               errors={errors}
-              handleChange={(event) => {
-                const { value } = event.target;
-                event.target.value = cpfMask(value);
-              }}
               registerInput={{
                 ...register('cpf', {
-                  onChange: (event) => {
-                    const { value } = event.target;
-                    event.target.value = cpfMask(value);
-                  },
+                  onChange: (event) => cpfMask(event),
                 }),
               }}
             />

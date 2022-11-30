@@ -1,6 +1,6 @@
 import { api } from '../lib/axios';
 
-export const setToken = (token) => {
+export const setTokenHeaders = (token) => {
   api.defaults.headers.common.Authorization = token;
 };
 
@@ -11,5 +11,10 @@ export const requestLogin = async (body) => {
 
 export const requestSignUp = async (body) => {
   const { data } = await api.post('/auth/register', body);
+  return data;
+}
+
+export const requestDeposit = async (body) => {
+  const { data } = await api.patch('/transactions/deposit', body);
   return data;
 }

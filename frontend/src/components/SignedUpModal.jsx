@@ -7,8 +7,8 @@ function SignedUpModal({ visible }) {
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-30
-      backdrop-blur-sm flex justify-center items-center`}
+      className={`fixed inset-0 bg-black bg-opacity-40
+      flex justify-center items-center`}
     >
       <div
         className={`bg-slate-200 p-4 rounded

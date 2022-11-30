@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { requestLogin, setToken } from '../services/requests';
+import { requestLogin, setTokenHeaders } from '../services/requests';
 import FormInput from '../components/FormInput';
 import AuthContext from '../context/AuthProvider';
 import donusLogo from '../assets/logo.png';
@@ -36,8 +36,8 @@ function Login() {
     try {
       const { token } = await requestLogin(values);
       setAuth(token);
-      setToken(token);
-      localStorage.setItem('token', token);
+      setTokenHeaders(token);
+      localStorage.setItem('donus-bank:auth-token', token);
     } catch (error) {
       setLoginFail(true);
       console.error(error.message);
