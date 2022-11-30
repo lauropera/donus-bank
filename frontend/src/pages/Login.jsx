@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ const loginSchema = yup.object().shape({
 
 function Login() {
   const navigate = useNavigate();
-  const { setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const [loginFail, setLoginFail] = useState(false);
   const {
     register,
@@ -28,11 +28,14 @@ function Login() {
     resolver: yupResolver(loginSchema),
   });
 
+  useEffect(() => {
+    if (auth) navigate('/user');
+  }, [auth]);
+
   const onSubmit = async (values) => {
     try {
       const data = await requestLogin(values);
       setAuth(data.token);
-      navigate('/transactions');
     } catch (error) {
       setLoginFail(true);
       console.error(error.message);
@@ -42,7 +45,7 @@ function Login() {
   return (
     <div className='font-body'>
       <main className='flex h-screen bg-emerald-600'>
-        <div className='w-full max-w-xs m-auto bg-slate-100 rounded p-5'>
+        <div className='w-full max-w-xs sm:max-w-sm m-auto bg-slate-100 rounded p-5'>
           <header>
             <img
               className='w-20 mx-auto mb-5'

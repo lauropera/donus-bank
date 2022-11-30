@@ -75,7 +75,7 @@ function SignUp() {
     <div className='font-body'>
       <main className='flex min-h-screen bg-emerald-600'>
         <SignedUpModal visible={signedUp} />
-        <div className='w-full max-w-xs m-auto bg-slate-100 rounded p-5'>
+        <div className='w-full max-w-xs sm:max-w-sm m-auto bg-slate-100 rounded p-5'>
           <header>
             <img
               className='w-20 mx-auto mb-5'
