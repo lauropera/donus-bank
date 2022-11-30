@@ -29,7 +29,7 @@ const signUpSchema = yup.object().shape({
 
 function SignUp() {
   const navigate = useNavigate();
-  const [signUpFail, setSignUpFail] = useState(false);
+  const [signUpErrorMsg, setSignUpErrorMsg] = useState('');
   const {
     register,
     handleSubmit,
@@ -56,7 +56,7 @@ function SignUp() {
       await requestSignUp(user);
       alert('OK');
     } catch (error) {
-      setSignUpFail(true);
+      setSignUpErrorMsg(error.response.data.message);
       console.error(error.message);
     }
   };
@@ -141,8 +141,8 @@ function SignUp() {
               >
                 Cadastrar
               </button>
-              {signUpFail && (
-                <p className='mb-3 text-red-600'>O CPF já está cadastrado</p>
+              {signUpErrorMsg && (
+                <p className='mb-3 text-red-600'>{signUpErrorMsg}</p>
               )}
             </div>
           </form>
