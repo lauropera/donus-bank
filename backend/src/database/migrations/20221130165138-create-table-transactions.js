@@ -30,6 +30,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DOUBLE,
       },
+      transaction_type: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'TransactionsType',
+          key: 'id',
+        },
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATEONLY,
