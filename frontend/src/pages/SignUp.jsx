@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import donusLogo from '../assets/logo.png';
 import FormInput from '../components/FormInput';
 import { requestSignUp } from '../services/requests';
+import SignedUpModal from '../components/SignedUpModal';
 
-const CPF_REGEXP = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/;
+const CPF_REGEXP = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}/;
 
 const signUpSchema = yup.object().shape({
   name: yup
@@ -30,6 +31,7 @@ const signUpSchema = yup.object().shape({
 function SignUp() {
   const navigate = useNavigate();
   const [signUpErrorMsg, setSignUpErrorMsg] = useState('');
+  const [signedUp, setSignedUp] = useState(false);
   const {
     register,
     handleSubmit,
@@ -45,6 +47,14 @@ function SignUp() {
 
   const formatCpf = (cpf) => cpf.replace(/[^0-9,]*/g, '').replace(',', '.');
 
+  const redirectToLogin = () => {
+    const TWO_SECONDS = 2000;
+    setSignedUp(true);
+    setTimeout(() => {
+      navigate('/');
+    }, TWO_SECONDS);
+  };
+
   const onSubmit = async ({ name, lastName, cpf, email, password }) => {
     try {
       const user = {
@@ -54,7 +64,7 @@ function SignUp() {
         password,
       };
       await requestSignUp(user);
-      alert('OK');
+      redirectToLogin();
     } catch (error) {
       setSignUpErrorMsg(error.response.data.message);
       console.error(error.message);
@@ -64,6 +74,7 @@ function SignUp() {
   return (
     <div className='font-body'>
       <main className='flex min-h-screen bg-emerald-600'>
+        <SignedUpModal visible={signedUp} />
         <div className='w-full max-w-xs m-auto bg-slate-100 rounded p-5'>
           <header>
             <img
