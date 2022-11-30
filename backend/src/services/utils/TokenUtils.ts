@@ -13,9 +13,12 @@ class Token {
   }
 
   static async authenticate(token: string): Promise<ITokenPayload> {
-    if (!token) throw new HttpException(401, 'Token é obrigatório');
-    const payload = await jwt.verify(token, SECRET);
-    return payload as ITokenPayload;
+    try {
+      const payload = await jwt.verify(token, SECRET);
+      return payload as ITokenPayload;
+    } catch (error) {
+      throw new HttpException(400, 'Token inválido');
+    }
   }
 }
 
