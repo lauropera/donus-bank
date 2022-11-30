@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { requestLogin } from '../services/requests';
 import FormInput from '../components/FormInput';
@@ -12,7 +12,7 @@ const loginSchema = yup.object().shape({
   email: yup.string().email('Email inválido').required('O email é obrigatório'),
   password: yup
     .string()
-    .min(4, 'A senha precisa ter no mínimo 4 caracteres')
+    .min(4, 'No mínimo 4 caracteres')
     .required('A senha é obrigatória'),
 });
 
