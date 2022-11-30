@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { Schema } from 'joi';
+import { Op } from 'sequelize';
 import db from '../database/models';
 import { ILogin, IRegister } from '../interfaces';
 import { loginSchema, registerSchema } from './utils/validations/schemas';
@@ -39,14 +40,23 @@ class UserService {
     return token;
   }
 
-  private async checkIfUserExists(cpf: string): Promise<void> {
-    const user = await this._model.findOne({ where: { cpf } });
-    if (user) throw new HttpException(409, 'CPF já cadastrado');
+  private async checkIfUserExists(credentials: IRegister): Promise<void> {
+    const users = await this._model.findAll({
+      where: {
+        [Op.or]: [{ cpf: credentials.cpf }, { email: credentials.email }],
+      },
+    });
+
+    if (users.some((user) => user.dataValues.email === credentials.email)) {
+      throw new HttpException(409, 'Email já cadastrado');
+    }
+
+    if (users.length > 0) throw new HttpException(409, 'CPF já cadastrado');
   }
 
   async register(credentials: IRegister): Promise<void> {
     UserService.validateCredentials(registerSchema, credentials);
-    await this.checkIfUserExists(credentials.cpf);
+    await this.checkIfUserExists(credentials);
 
     const transaction = await db.transaction();
     try {
