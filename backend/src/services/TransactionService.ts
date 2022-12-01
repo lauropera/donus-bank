@@ -40,8 +40,17 @@ class TransactionService {
     filter: TransactionFilter,
     dateToFilter: IDateFilter | undefined
   ): any {
-    if (filter === 'sent') return { ownerAccountId: id };
+    if (filter === 'sent') {
+      return {
+        [Op.and]: [
+          { ownerAccountId: id },
+          { [Op.not]: { transactionTypeId: DEPOSIT_TYPE_ID } },
+        ],
+      };
+    }
+
     if (filter === 'received') return { receiverAccountId: id };
+
     if (filter === 'date') {
       const starts = dateToFilter?.starts ? dateToFilter?.starts : '0';
       const ends = dateToFilter?.ends ? dateToFilter?.ends : Date.now();
@@ -49,6 +58,7 @@ class TransactionService {
         createdAt: { [Op.between]: [starts, ends] },
       };
     }
+
     return { [Op.or]: [{ ownerAccountId: id }, { receiverAccountId: id }] };
   }
 
