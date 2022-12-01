@@ -8,7 +8,6 @@ import requests, { setTokenHeaders } from '../services/requests';
 import FormInput from '../components/FormInput';
 import { LoginSchema } from '../services/schemas';
 
-
 function Login() {
   const navigate = useNavigate();
   const [loginFail, setLoginFail] = useState(false);
@@ -29,7 +28,7 @@ function Login() {
       const { token } = await requests.post.login(values);
       localStorage.setItem('donus-bank:auth-token', token);
       setTokenHeaders(token);
-      navigate('/user')
+      navigate('/user');
     } catch (error) {
       setLoginFail(true);
     }
@@ -38,7 +37,10 @@ function Login() {
   return (
     <div className='font-body'>
       <main className='flex h-screen bg-emerald-600'>
-        <div className='w-full max-w-xs sm:max-w-sm m-auto bg-slate-100 rounded p-5'>
+        <div
+          className='w-full max-w-xs sm:max-w-sm
+          m-auto bg-slate-100 rounded p-5'
+        >
           <header>
             <img
               className='w-20 mx-auto mb-5'
@@ -68,8 +70,8 @@ function Login() {
 
             <div>
               <button
-                className={`w-full bg-emerald-600 hover:bg-emerald-900
-                text-white font-bold py-2 px-4 mb-6 rounded transition-all`}
+                className='w-full bg-emerald-600 hover:bg-emerald-900
+                text-white font-bold py-2 px-4 mb-6 rounded transition-all'
                 type='submit'
               >
                 Entrar
@@ -82,10 +84,10 @@ function Login() {
 
           <footer>
             <button
-              className={`w-full border-2 text-emerald-600 border-emerald-600
+              className='w-full border-2 text-emerald-600 border-emerald-600
                 hover:bg-emerald-900 hover:border-emerald-900
                 hover:text-white text-sm font-bold py-2 px-4 mb-6
-                rounded transition-all`}
+                rounded transition-all'
               type='button'
               onClick={() => navigate('/register')}
             >

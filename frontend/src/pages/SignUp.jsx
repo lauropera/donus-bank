@@ -49,7 +49,10 @@ function SignUp() {
       <main className='flex min-h-screen bg-emerald-600'>
         <SignedUpModal visible={signedUp} />
 
-        <div className='w-full max-w-xs sm:max-w-sm m-auto bg-slate-100 rounded p-5'>
+        <div
+          className='w-full max-w-xs sm:max-w-sm
+          m-auto bg-slate-100 rounded p-5'
+        >
           <header>
             <img
               className='w-20 mx-auto mb-5'
@@ -112,10 +115,10 @@ function SignUp() {
 
             <div>
               <button
-                className={`w-full border-2 text-emerald-600 border-emerald-600
+                className='w-full border-2 text-emerald-600 border-emerald-600
                 hover:bg-emerald-900 hover:border-emerald-900
                 hover:text-white text-sm font-bold py-2 px-4 mb-6
-                rounded transition-all`}
+                rounded transition-all'
                 type='submit'
               >
                 Cadastrar

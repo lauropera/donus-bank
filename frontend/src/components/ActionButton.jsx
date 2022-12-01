@@ -3,8 +3,8 @@ import { string, element, func } from 'prop-types';
 function ActionButton({ text, color, icon, handleClick }) {
   return (
     <div
-      className={`text-slate-900 font-medium
-    flex flex-col items-center gap-1`}
+      className='text-slate-900 font-medium
+    flex flex-col items-center gap-1'
     >
       <button
         aria-label={text}

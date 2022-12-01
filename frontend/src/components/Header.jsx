@@ -14,8 +14,8 @@ function Header() {
 
   return (
     <header
-      className={`bg-emerald-600 h-14 w-screen justify-between
-    flex items-center fixed top-0 drop-shadow px-7`}
+      className='bg-emerald-600 h-14 w-screen justify-between
+    flex items-center fixed top-0 drop-shadow px-7'
     >
       <div className='flex items-center h-full'>
         <div>

@@ -12,9 +12,9 @@ function FormInput({ labelText, name, id, type, errors, registerInput }) {
       </label>
 
       <input
-        className={`w-full p-2 mb-3 text-emerald-700 border-b-2
+        className='w-full p-2 mb-3 text-emerald-700 border-b-2
           border-emerald-600 outline-none focus:bg-gray-300
-          transition-all`}
+          transition-all'
         name={name}
         id={id}
         type={type}

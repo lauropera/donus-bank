@@ -54,8 +54,8 @@ function UserHome() {
       <Header />
       <main className='flex h-screen bg-slate-200'>
         <section
-          className={`w-full m-auto max-w-xs
-        sm:max-w-sm bg-slate-50 rounded p-5 h-96`}
+          className='w-full m-auto max-w-xs
+        sm:max-w-sm bg-slate-50 rounded p-5 h-96'
         >
           {!isFetching && (
             <div className='h-full flex flex-col'>
@@ -69,8 +69,8 @@ function UserHome() {
 
               <div>
                 <p
-                  className={`text-xl font-semibold mb-3
-                text-slate-800 cursor-default`}
+                  className='text-xl font-semibold mb-3
+                text-slate-800 cursor-default'
                 >
                   Conta
                 </p>

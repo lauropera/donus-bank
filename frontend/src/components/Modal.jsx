@@ -7,18 +7,18 @@ function Modal({ visible, headerText, handleModal, form }) {
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-40
-      flex justify-center items-center`}
+      className='fixed inset-0 bg-black bg-opacity-40
+      flex justify-center items-center'
     >
       <div
-        className={`bg-slate-200 p-4 rounded w-80
-        h-max flex justify-evenly items-center flex-col gap-1`}
+        className='bg-slate-200 p-4 rounded w-80
+        h-max flex justify-evenly items-center flex-col gap-1'
       >
         <header className='w-11/12 flex justify-between items-center'>
           <div>
             <h1
-              className={`text-gray-800 font-lg font-bold
-            tracking-normal leading-tight text-xl`}
+              className='text-gray-800 font-lg font-bold
+            tracking-normal leading-tight text-xl'
             >
               {headerText}
             </h1>
