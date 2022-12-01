@@ -7,12 +7,16 @@ export const setTokenHeaders = (token) => {
 
 const requests = {
   get: {
-    getUser: async () => {
-      setTokenHeaders(getToken());
+    user: async () => {
+      // setTokenHeaders(getToken());
 
       const { data } = await api.get('/auth/me');
       return data;
     },
+    transactions: async () => {
+      const { data } = await api.get('/transactions/all');
+      return data;
+    }
   },
   post: {
     login: async (body) => {

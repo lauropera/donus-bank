@@ -10,16 +10,14 @@ import Header from '../components/Header';
 import DepositForm from '../components/DepositForm';
 import ActionButton from '../components/ActionButton';
 import TransactionForm from '../components/TransactionForm';
-import requests from '../services/requests';
+import useApiGet from '../hooks/useApiGet';
 
 const BAD_REQUEST_STATUS = 400;
 
 function UserHome() {
   const navigate = useNavigate();
-  const [data, setData] = useState({});
-  const [errorStatus, setErrorStatus] = useState(0);
-  const [refresh, setRefresh] = useState(false);
-  const [isFetching, setIsFetching] = useState(true);
+  const { data, errorStatus, isFetching, refresh, setRefresh } =
+    useApiGet('user');
   const [showModal, setShowModal] = useState({
     deposit: false,
     transfer: false,
@@ -29,25 +27,12 @@ function UserHome() {
     setShowModal({ ...showModal, [type]: !showModal[type] });
   };
 
-  const getData = async () => {
-    try {
-      const userData = await requests.get.getUser();
-      setData(userData);
-    } catch (error) {
-      setErrorStatus(error);
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
   useEffect(() => {
-    getData();
-
     if (!getToken() || errorStatus === BAD_REQUEST_STATUS) {
       removeToken();
       return navigate('/');
     }
-  }, [errorStatus, refresh]);
+  }, [errorStatus]);
 
   return (
     <div className='font-body'>
@@ -77,7 +62,10 @@ function UserHome() {
                 <div className='flex items-center gap-2'>
                   <RiWallet3Fill size={40} className='text-emerald-700' />
                   <p className='text-2xl font-bold text-slate-900'>
-                    {`R$${String(data?.account?.balance).replace('.', ',')}`}
+                    {(data?.account?.balance).toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }) || 'R$0,00'}
                   </p>
                 </div>
               </div>
