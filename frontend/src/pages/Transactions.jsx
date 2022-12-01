@@ -18,7 +18,19 @@ function Transactions() {
         <div
           className='w-full max-w-xs mt-4 sm:max-w-sm
           bg-slate-50 rounded p-5 h-20'
-        ></div>
+        >
+          <div>
+            <label className='flex flex-col'>
+              Tipo
+              <select onChange={(e) => setFilterOption(e.target.value)}>
+                <option value=''>Todas</option>
+                <option value='sent'>Enviadas</option>
+                <option value='received'>Recebidas</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
         <section
           className='w-full max-w-xs sm:max-w-sm
         bg-slate-50 rounded p-5 h-4/6 overflow-scroll'
