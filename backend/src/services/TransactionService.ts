@@ -7,11 +7,12 @@ import { depositSchema, transactionSchema } from './utils/validations/schemas';
 import User from '../database/models/User';
 import Transaction from '../database/models/Transaction';
 import TransactionType from '../database/models/TransactionType';
-import Account, { IAccountCreation } from '../database/models/Account';
+import Account from '../database/models/Account';
 
 import IDateFilter from '../interfaces/IDateFilter';
 import ITransaction, {
   ITransactionCreation,
+  ITransactionDeposit,
   TransactionFilter,
   TransactionMethod,
 } from '../interfaces/ITransaction';
@@ -141,11 +142,11 @@ class TransactionService {
     }
   }
 
-  async deposit(token: string, quantity: IAccountCreation): Promise<void> {
+  async deposit(token: string, deposit: ITransactionDeposit): Promise<void> {
     const { id } = await Token.authenticate(token);
 
-    const validation = depositSchema.validate(quantity);
-    if (validation.error || !quantity.balance) {
+    const validation = depositSchema.validate(deposit);
+    if (validation.error || !deposit.value) {
       throw new HttpException(400, validation.error.message);
     }
 
@@ -159,13 +160,13 @@ class TransactionService {
           ownerAccountId: id,
           receiverAccountId: id,
           transactionTypeId: DEPOSIT_TYPE_ID,
-          value: quantity.balance,
+          value: deposit.value,
         },
         { transaction }
       );
 
       await this._accountModel.update(
-        { balance: userAccount.balance + quantity.balance },
+        { balance: userAccount.balance + deposit.value },
         { where: { id }, transaction }
       );
 

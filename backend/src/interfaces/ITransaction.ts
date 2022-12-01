@@ -3,11 +3,10 @@ export default interface ITransaction extends ITransactionData {
   createdAt: Date;
 }
 
-export interface ITransactionData {
+export interface ITransactionData extends ITransactionDeposit {
   ownerAccountId: number;
   receiverAccountId: number;
   transactionTypeId: number;
-  value: number;
 }
 
 export type TransactionMethod = 'cpf' | 'email';
@@ -16,4 +15,8 @@ export type TransactionFilter = 'sent' | 'received' | 'date';
 export interface ITransactionCreation extends ITransactionData {
   email?: string;
   cpf?: string;
+}
+
+export interface ITransactionDeposit {
+  value: number;
 }

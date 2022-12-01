@@ -46,7 +46,7 @@ export const transactionSchema = Joi.object({
   cpf: Joi.document().cpf().messages({
     'string.cpf': 'CPF inválido',
   }),
-  value: Joi.number().min(0.01).max(2000).required()
+  value: Joi.number().min(0.01).required()
     .messages({
       'any.required': REQUIRED_MSG,
       'number.min': MIN_MSG,
@@ -54,7 +54,7 @@ export const transactionSchema = Joi.object({
 });
 
 export const depositSchema = Joi.object({
-  balance: Joi.number().min(0.01).max(2000).required()
+  value: Joi.number().min(0.01).max(2000).required()
     .messages({
       'any.required': REQUIRED_MSG,
       'number.min': MIN_MSG,
