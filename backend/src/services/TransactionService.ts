@@ -44,7 +44,7 @@ class TransactionService {
         createdAt: { [Op.between]: [starts, ends] },
       };
     }
-    return { ownerAccountId: id, receiverAccountId: id };
+    return { [Op.or]: [{ ownerAccountId: id }, { receiverAccountId: id }] };
   }
 
   async getAll(
@@ -62,12 +62,16 @@ class TransactionService {
 
     const transactions = await this._model.findAll({
       attributes: {
-        exclude: ['ownerAccountId', 'receiverAccountId'],
+        exclude: ['ownerAccountId', 'receiverAccountId', 'transactionTypeId'],
       },
       include: [
         { model: Account, as: 'ownerAccount' },
         { model: Account, as: 'receiverAccount' },
-        { model: TransactionType, as: 'transactionType' },
+        {
+          model: TransactionType,
+          as: 'transactionType',
+          attributes: { exclude: ['id'] },
+        },
       ],
       where: { ...filter },
     });

@@ -26,14 +26,15 @@ TransactionType.init(
   {
     sequelize: db,
     timestamps: false,
+    underscored: true,
     tableName: 'TransactionTypes',
   },
 );
 
-TransactionType.hasMany(Transaction, { foreignKey: 'transaction_type_id' });
+TransactionType.hasMany(Transaction, { foreignKey: 'transactionTypeId' });
 
 Transaction.belongsTo(TransactionType, {
-  foreignKey: 'transaction_type_id',
+  foreignKey: 'transactionTypeId',
   as: 'transactionType',
 });
 
