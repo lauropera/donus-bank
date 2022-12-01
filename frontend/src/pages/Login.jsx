@@ -79,7 +79,7 @@ function Login() {
                 text-white font-bold py-2 px-4 mb-6 rounded transition-all`}
                 type='submit'
               >
-                Enviar
+                Entrar
               </button>
               {loginFail && (
                 <p className='mb-3 text-red-600'>Email ou senha incorretos</p>
