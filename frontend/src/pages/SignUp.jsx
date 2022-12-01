@@ -68,6 +68,7 @@ function SignUp() {
                 name='name'
                 id='name'
                 type='text'
+                maxLength='14'
                 errors={errors}
                 registerInput={{ ...register('name') }}
               />
@@ -87,6 +88,7 @@ function SignUp() {
               name='cpf'
               id='cpf'
               type='text'
+              maxLength='14'
               errors={errors}
               registerInput={{
                 ...register('cpf', {

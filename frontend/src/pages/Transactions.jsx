@@ -1,6 +1,13 @@
+import { useState } from 'react';
 import Header from '../components/Header';
+import Transaction from '../components/Transaction';
+import useApiGet from '../hooks/useApiGet';
 
 function Transactions() {
+  const [filterOption, setFilterOption] = useState('');
+  const { data, isFetching } = useApiGet('transactions', filterOption);
+  const user = useApiGet('user');
+
   return (
     <div className='font-body'>
       <Header />
@@ -12,10 +19,37 @@ function Transactions() {
           className='w-full max-w-xs mt-4 sm:max-w-sm
           bg-slate-50 rounded p-5 h-20'
         ></div>
-        <div
+        <section
           className='w-full max-w-xs sm:max-w-sm
-        bg-slate-50 rounded p-5 h-80'
-        ></div>
+        bg-slate-50 rounded p-5 h-4/6 overflow-scroll'
+        >
+          {!isFetching && !user.isFetching && (
+            <div className='flex flex-col gap-5'>
+              {data.map(
+                ({
+                  id,
+                  createdAt,
+                  ownerAccount,
+                  receiverAccount,
+                  transactionType,
+                  value,
+                }) => {
+                  return (
+                    <Transaction
+                      key={id}
+                      userId={user.data.id}
+                      created={createdAt}
+                      owner={ownerAccount}
+                      receiver={receiverAccount}
+                      transactionType={transactionType}
+                      value={value}
+                    />
+                  );
+                }
+              )}
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );

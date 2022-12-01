@@ -1,13 +1,19 @@
 import React from 'react';
 import { string, shape } from 'prop-types';
 
-function FormInput({ labelText, name, id, type, errors, registerInput }) {
+function FormInput({
+  labelText,
+  name,
+  id,
+  type,
+  errors,
+  registerInput,
+  step,
+  maxLength,
+}) {
   return (
     <div>
-      <label
-        className='block mb-2 font-medium text-emerald-900'
-        htmlFor={id}
-      >
+      <label className='block mb-2 font-medium text-emerald-900' htmlFor={id}>
         {labelText}
       </label>
 
@@ -18,8 +24,8 @@ function FormInput({ labelText, name, id, type, errors, registerInput }) {
         name={name}
         id={id}
         type={type}
-        step={name === 'value' ? '0.01' : '0'}
-        maxLength={name === 'cpf' ? 14 : ''}
+        step={step}
+        maxLength={maxLength}
         {...registerInput}
       />
 
@@ -28,6 +34,11 @@ function FormInput({ labelText, name, id, type, errors, registerInput }) {
   );
 }
 
+FormInput.defaultProps = {
+  step: '',
+  maxLength: '',
+};
+
 FormInput.propTypes = {
   labelText: string.isRequired,
   name: string.isRequired,
@@ -35,6 +46,8 @@ FormInput.propTypes = {
   type: string.isRequired,
   errors: shape({}).isRequired,
   registerInput: shape({}).isRequired,
+  step: string,
+  maxLength: string,
 };
 
 export default FormInput;

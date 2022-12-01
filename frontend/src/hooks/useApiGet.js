@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getToken } from '../utils/tokenStorage';
 import requests, { setTokenHeaders } from '../services/requests';
 
-function useApiGet(request) {
+function useApiGet(request, params) {
   const [data, setData] = useState([]);
   const [errorStatus, setErrorStatus] = useState(0);
   const [refresh, setRefresh] = useState(false);
@@ -10,7 +10,7 @@ function useApiGet(request) {
 
   useEffect(() => {
     setTokenHeaders(getToken());
-    requests.get[request]()
+    requests.get[request](params)
       .then((response) => setData(response))
       .catch((error) => setErrorStatus(error.response.status))
       .finally(() => setIsFetching(false));

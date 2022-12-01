@@ -1,5 +1,4 @@
 import { api } from '../lib/axios';
-import { getToken } from '../utils/tokenStorage';
 
 export const setTokenHeaders = (token) => {
   api.defaults.headers.common.Authorization = token;
@@ -8,15 +7,15 @@ export const setTokenHeaders = (token) => {
 const requests = {
   get: {
     user: async () => {
-      // setTokenHeaders(getToken());
-
       const { data } = await api.get('/auth/me');
       return data;
     },
-    transactions: async () => {
-      const { data } = await api.get('/transactions/all');
+    transactions: async (option) => {
+      const filterOption = option ? `?filter=${option}` : '';
+
+      const { data } = await api.get(`/transactions/all${filterOption}`);
       return data;
-    }
+    },
   },
   post: {
     login: async (body) => {

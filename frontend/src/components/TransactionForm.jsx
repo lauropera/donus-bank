@@ -83,6 +83,7 @@ function TransactionForm({ handleModal, refreshBalance }) {
             name='cpf'
             id='cpf'
             type='text'
+            maxLength='14'
             errors={errors}
             registerInput={{
               ...register('cpf', {
@@ -97,6 +98,7 @@ function TransactionForm({ handleModal, refreshBalance }) {
           name='value'
           id='value'
           type='number'
+          step='0.01'
           errors={errors}
           registerInput={{ ...register('value') }}
         />

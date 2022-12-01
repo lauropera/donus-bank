@@ -33,6 +33,7 @@ function DepositForm({ handleModal, refreshBalance }) {
         name='value'
         id='value'
         type='text'
+        step='0.01'
         errors={errors}
         registerInput={{ ...register('value') }}
       />
@@ -48,6 +49,6 @@ function DepositForm({ handleModal, refreshBalance }) {
 DepositForm.propTypes = {
   handleModal: func.isRequired,
   refreshBalance: func.isRequired,
-}
+};
 
 export default DepositForm;
