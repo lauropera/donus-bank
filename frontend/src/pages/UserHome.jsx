@@ -112,7 +112,7 @@ function UserHome() {
                   form={
                     <DepositForm
                       handleModal={() => handleModal('deposit')}
-                      refreshBalance={() => setRefresh(true)}
+                      refreshBalance={() => setRefresh(!refresh)}
                     />
                   }
                 />
@@ -130,7 +130,7 @@ function UserHome() {
                   form={
                     <TransactionForm
                       handleModal={() => handleModal('transfer')}
-                      refreshBalance={() => setRefresh(true)}
+                      refreshBalance={() => setRefresh(!refresh)}
                     />
                   }
                 />
