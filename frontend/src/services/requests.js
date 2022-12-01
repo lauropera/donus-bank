@@ -10,10 +10,11 @@ const requests = {
       const { data } = await api.get('/auth/me');
       return data;
     },
-    transactions: async (option) => {
-      const filterOption = option ? `?filter=${option}` : '';
+    transactions: async ({ filter, startDate, endDate }) => {
+      const { data } = await api.get(
+        `/transactions/all?filter=${filter}&starts=${startDate}&ends${endDate}`
+      );
 
-      const { data } = await api.get(`/transactions/all${filterOption}`);
       return data;
     },
   },

@@ -15,7 +15,7 @@ function Transaction({
   }, []);
 
   const setDisplayName = () => {
-    if (transactionType.name === 'Depósito') return setName('Depósito');
+    if (transactionType === 'Depósito') return setName('Depósito');
     if (userId === receiver.id) return setName(owner.user.name);
     setName(receiver.user.name);
   };
@@ -23,9 +23,9 @@ function Transaction({
   return (
     <div className='flex flex-col justify-between items-center'>
       <div className='w-full mb-1'>
-        {transactionType.name !== 'Depósito' && (
+        {transactionType !== 'Depósito' && (
           <p className='text-indigo-900 font-semibold text-sm text-left'>
-            {transactionType.name}
+            {transactionType}
           </p>
         )}
       </div>
