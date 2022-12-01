@@ -5,10 +5,10 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import donusLogo from '../assets/logo.png';
 import FormInput from '../components/FormInput';
-import { requestSignUp } from '../services/requests';
+import requests from '../services/requests';
 import SignedUpModal from '../components/SignedUpModal';
 
-const CPF_REGEXP = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}/;
+const CPF_REGEX = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}/;
 
 const signUpSchema = yup.object().shape({
   name: yup
@@ -22,7 +22,7 @@ const signUpSchema = yup.object().shape({
     .required('O sobrenome é obrigatório'),
   cpf: yup
     .string()
-    .matches(CPF_REGEXP, 'CPF inválido')
+    .matches(CPF_REGEX, 'CPF inválido')
     .required('O CPF é obrigatório'),
   email: yup.string().email('Email inválido').required('O email é obrigatório'),
   password: yup.string().min(4, 'No mínimo 4 caracteres').required(),
@@ -40,12 +40,11 @@ function SignUp() {
     resolver: yupResolver(signUpSchema),
   });
 
-  const cpfMask = (event) => {
-    const { value } = event.target;
-    const formattedCpf = value
+  const cpfMask = ({ target }) => {
+    const formattedCpf = target.value
       .replace(/[^\d]/g, '')
       .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    return (event.target.value = formattedCpf);
+    return (target.value = formattedCpf);
   };
 
   const formatCpf = (cpf) => cpf.replace(/[^0-9,]*/g, '').replace(',', '.');
@@ -66,11 +65,10 @@ function SignUp() {
         email,
         password,
       };
-      await requestSignUp(user);
+      await requests.post.signUp(user);
       redirectToLogin();
     } catch (error) {
       setSignUpErrorMsg(error.response.data.message);
-      console.error(error.message);
     }
   };
 
@@ -98,6 +96,7 @@ function SignUp() {
                 errors={errors}
                 registerInput={{ ...register('name') }}
               />
+
               <FormInput
                 labelText='Sobrenome'
                 name='lastName'

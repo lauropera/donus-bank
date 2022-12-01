@@ -12,11 +12,11 @@ function FormInput({ labelText, name, id, type, errors, registerInput }) {
         className={`w-full p-2 mb-3 text-emerald-700 border-b-2
           border-emerald-600 outline-none focus:bg-gray-300
           transition-all`}
-        type={type}
         name={name}
+        id={id}
+        type={type}
         step={name === 'balance' ? '0.01' : 0}
         maxLength={name === 'cpf' ? 14 : ''}
-        id={id}
         {...registerInput}
       />
 
@@ -29,8 +29,8 @@ FormInput.propTypes = {
   labelText: string.isRequired,
   name: string.isRequired,
   id: string.isRequired,
-  errors: shape({}).isRequired,
   type: string.isRequired,
+  errors: shape({}).isRequired,
   registerInput: shape({}).isRequired,
 };
 

@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { requestLogin, setTokenHeaders } from '../services/requests';
+import requests, { setTokenHeaders } from '../services/requests';
 import FormInput from '../components/FormInput';
-import AuthContext from '../context/AuthProvider';
 import donusLogo from '../assets/logo.png';
+import { getToken } from '../utils/tokenStorage';
 
 const loginSchema = yup.object().shape({
   email: yup.string().email('Email inválido').required('O email é obrigatório'),
@@ -18,7 +18,6 @@ const loginSchema = yup.object().shape({
 
 function Login() {
   const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
   const [loginFail, setLoginFail] = useState(false);
   const {
     register,
@@ -29,18 +28,17 @@ function Login() {
   });
 
   useEffect(() => {
-    if (auth) navigate('/user');
-  }, [auth]);
+    if (getToken()) navigate('/user');
+  }, []);
 
   const onSubmit = async (values) => {
     try {
-      const { token } = await requestLogin(values);
-      setAuth(token);
-      setTokenHeaders(token);
+      const { token } = await requests.post.login(values);
       localStorage.setItem('donus-bank:auth-token', token);
+      setTokenHeaders(token);
+      navigate('/user')
     } catch (error) {
       setLoginFail(true);
-      console.error(error.message);
     }
   };
 

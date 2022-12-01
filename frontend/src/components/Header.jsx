@@ -1,16 +1,13 @@
 import React from 'react';
-import { func } from 'prop-types';
 import { IoMdExit } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import donusLogoAlt from '../assets/logo_alt.png';
 import { removeToken } from '../utils/tokenStorage';
 
-function Header({ logoutUser }) {
+function Header() {
   const navigate = useNavigate();
 
   const logout = () => {
-    const EMPTY_TOKEN = '';
-    logoutUser(EMPTY_TOKEN);
     removeToken();
     navigate('/');
   };
@@ -44,9 +41,5 @@ function Header({ logoutUser }) {
     </header>
   );
 }
-
-Header.propTypes = {
-  logoutUser: func.isRequired,
-};
 
 export default Header;

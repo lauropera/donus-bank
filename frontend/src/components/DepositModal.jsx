@@ -3,9 +3,8 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useForm } from 'react-hook-form';
-import { requestDeposit } from '../services/requests';
+import requests from '../services/requests';
 import FormInput from './FormInput';
-// import formatFloatNumber from '../utils/formatFloatNumber';
 
 const depositSchema = yup.object().shape({
   balance: yup
@@ -26,27 +25,10 @@ function DepositModal({ text, visible, onClose, refreshBalance }) {
   });
 
   const onSubmit = async (values) => {
-    await requestDeposit(values);
+    await requests.patch.deposit(values);
     refreshBalance();
     onClose();
   };
-
-  // const formatNumber = (event) => {
-  //   const { value } = event.target;
-  //   console.log(value);
-  //   const MIN = 0;
-  //   const MAX = 2000;
-  //   const decimalPlaces = value.split('.')[1];
-
-  //   if (Number(value) < MIN) return (event.target.value = MIN);
-  //   if (Number(value) > MAX) return (event.target.value = MAX);
-  //   if (Number.isNaN(value)) return (event.target.value = 0);
-  //   if (decimalPlaces && decimalPlaces.length >= 1) {
-  //     return (event.target.value = formatFloatNumber(value));
-  //   }
-  //   console.log(parseFloat(value));
-  //   return (event.target.value = String(parseFloat(value)));
-  // };
 
   if (!visible) return null;
 
@@ -81,12 +63,7 @@ function DepositModal({ text, visible, onClose, refreshBalance }) {
             id='balance'
             type='number'
             errors={errors}
-            registerInput={{
-              ...register('balance', {
-                // onChange: (event) => formatNumber(event),
-                value: 0,
-              }),
-            }}
+            registerInput={{ ...register('balance') }}
           />
 
           <div className='flex gap-3'>
@@ -95,7 +72,7 @@ function DepositModal({ text, visible, onClose, refreshBalance }) {
                 text-white font-bold py-2 px-4 mb-6 rounded transition-all`}
               type='submit'
             >
-              {text === 'Depósito' ? 'Depositar' : 'Enviar'}
+              Confirmar
             </button>
             <button
               className={`w-full text-slate-800 border-2 border-slate-300
