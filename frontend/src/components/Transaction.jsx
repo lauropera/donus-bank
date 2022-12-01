@@ -48,7 +48,9 @@ function Transaction({
             )}`}
           </p>
 
-          <p>{new Date(created).toLocaleDateString('pt-br')}</p>
+          <p>
+            {new Date(created).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+          </p>
         </div>
       </div>
 

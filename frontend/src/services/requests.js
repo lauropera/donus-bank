@@ -10,9 +10,9 @@ const requests = {
       const { data } = await api.get('/auth/me');
       return data;
     },
-    transactions: async ({ filter, startDate, endDate }) => {
+    transactions: async ({ filter, starts = '', ends = '' }) => {
       const { data } = await api.get(
-        `/transactions/all?filter=${filter}&starts=${startDate}&ends${endDate}`
+        `/transactions/all?filter=${filter}&starts=${starts}&ends=${ends}`
       );
 
       return data;
