@@ -44,6 +44,7 @@ class TransactionService {
         createdAt: { [Op.between]: [starts, ends] },
       };
     }
+    return { ownerAccountId: id, receiverAccountId: id };
   }
 
   async getAll(
