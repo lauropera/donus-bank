@@ -7,7 +7,6 @@ import User from '../database/models/User';
 import Transaction from '../database/models/Transaction';
 import TransactionType from '../database/models/TransactionType';
 import Account from '../database/models/Account';
-import IDateFilter from '../interfaces/IDateFilter';
 import ITransaction, {
   ITransactionCreation,
   ITransactionDeposit,
@@ -18,12 +17,30 @@ import ITransaction, {
 const DEPOSIT_TYPE_ID = 1;
 const TRANSFER_TYPE_ID = 2;
 
-const setAccountIncludeOptions = (accountUser: string) => ({
-  model: Account,
-  as: accountUser,
-  attributes: { exclude: ['balance'] },
-  include: [{ model: User, as: 'user', attributes: ['name'] }],
-});
+const INCLUDE_OPTIONS = {
+  attributes: {
+    exclude: ['ownerAccountId', 'receiverAccountId', 'transactionTypeId'],
+  },
+  include: [
+    {
+      model: Account,
+      as: 'ownerAccount',
+      attributes: { exclude: ['balance'] },
+      include: [{ model: User, as: 'user', attributes: ['name'] }],
+    },
+    {
+      model: Account,
+      as: 'receiverAccount',
+      attributes: { exclude: ['balance'] },
+      include: [{ model: User, as: 'user', attributes: ['name'] }],
+    },
+    {
+      model: TransactionType,
+      as: 'transactionType',
+      attributes: { exclude: ['id'] },
+    },
+  ],
+};
 
 class TransactionService {
   private _model = Transaction;
@@ -37,11 +54,21 @@ class TransactionService {
 
   private static setFilter(
     id: number,
-    filter: TransactionFilter,
-    dateToFilter: IDateFilter | undefined
+    filterType: TransactionFilter | undefined,
+    startDate: string | undefined,
+    endDate: string | undefined
   ): any {
-    if (filter === 'sent') {
-      return {
+    let filterQuery = {};
+    let dateQuery = {};
+
+    if (!filterType) {
+      filterQuery = {
+        [Op.or]: [{ ownerAccountId: id }, { receiverAccountId: id }],
+      };
+    }
+
+    if (filterType === 'sent') {
+      filterQuery = {
         [Op.and]: [
           { ownerAccountId: id },
           { [Op.not]: { transactionTypeId: DEPOSIT_TYPE_ID } },
@@ -49,46 +76,38 @@ class TransactionService {
       };
     }
 
-    if (filter === 'received') return { receiverAccountId: id };
-
-    if (filter === 'date') {
-      const starts = dateToFilter?.starts ? dateToFilter?.starts : '0';
-      const ends = dateToFilter?.ends ? dateToFilter?.ends : Date.now();
-      return {
-        createdAt: { [Op.between]: [starts, ends] },
-      };
+    if (filterType === 'received') {
+      filterQuery = { receiverAccountId: id };
     }
 
-    return { [Op.or]: [{ ownerAccountId: id }, { receiverAccountId: id }] };
+    if (startDate || endDate) {
+      const starts = startDate ? new Date(startDate) : '';
+      const ends = endDate ? new Date(endDate) : new Date();
+
+      dateQuery = { createdAt: { [Op.between]: [starts, ends] } };
+    }
+
+    return { ...filterQuery, ...dateQuery };
   }
 
   async getAll(
     token: string,
-    filterOption: TransactionFilter,
-    dateToFilter: IDateFilter | undefined
+    filterOption: TransactionFilter | undefined,
+    startDate: string | undefined,
+    endDate: string | undefined
   ): Promise<ITransaction[]> {
     const { id: userId } = await Token.authenticate(token);
 
-    const filter = TransactionService.setFilter(
+    const filters = TransactionService.setFilter(
       userId,
       filterOption,
-      dateToFilter
+      startDate,
+      endDate
     );
 
     const transactions = await this._model.findAll({
-      attributes: {
-        exclude: ['ownerAccountId', 'receiverAccountId', 'transactionTypeId'],
-      },
-      include: [
-        setAccountIncludeOptions('ownerAccount'),
-        setAccountIncludeOptions('receiverAccount'),
-        {
-          model: TransactionType,
-          as: 'transactionType',
-          attributes: { exclude: ['id'] },
-        },
-      ],
-      where: { ...filter },
+      ...INCLUDE_OPTIONS,
+      where: { ...filters },
     });
 
     return transactions;
@@ -103,16 +122,20 @@ class TransactionService {
 
     TransactionService.validateTransaction(transactionData);
 
-    const ownerUser = await this._userModel.findByPk(id);
+    const ownerUser = await this._userModel.findByPk(id) as User;
     const receiverUser = await this._userModel.findOne({
       where: { [transferType]: transactionData[transferType] },
     });
 
+    if (!receiverUser) {
+      throw new HttpException(404, 'Destinatário não encontrado');
+    }
+
     const ownerAccount = await this._accountModel.findByPk(
-      ownerUser?.accountId
+      ownerUser.accountId
     );
     const receiverAccount = await this._accountModel.findByPk(
-      receiverUser?.accountId
+      receiverUser.accountId
     );
 
     if (!ownerAccount || !receiverAccount) {
@@ -166,12 +189,11 @@ class TransactionService {
     const { id } = await Token.authenticate(token);
 
     const validation = depositSchema.validate(deposit);
-    if (validation.error || !deposit.value) {
+    if (validation.error || !deposit) {
       throw new HttpException(400, validation.error.message);
     }
 
-    const userAccount = await this._accountModel.findByPk(id);
-    if (!userAccount) throw new HttpException(404, 'Conta não encontrada');
+    const userAccount = await this._accountModel.findByPk(id) as Account;
 
     const transaction = await db.transaction();
     try {

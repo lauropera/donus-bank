@@ -9,9 +9,6 @@ export interface ITransactionData extends ITransactionDeposit {
   transactionTypeId: number;
 }
 
-export type TransactionMethod = 'cpf' | 'email';
-export type TransactionFilter = 'sent' | 'received' | 'date';
-
 export interface ITransactionCreation extends ITransactionData {
   email?: string;
   cpf?: string;
@@ -20,3 +17,7 @@ export interface ITransactionCreation extends ITransactionData {
 export interface ITransactionDeposit {
   value: number;
 }
+
+export type TransactionMethod = 'cpf' | 'email';
+
+export type TransactionFilter = 'sent' | 'received';

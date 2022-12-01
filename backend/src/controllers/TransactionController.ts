@@ -18,14 +18,15 @@ class TransactionController {
   }
 
   async listAll(req: Request, res: Response): Promise<void> {
-    const { filter } = req.query;
+    const { filter, starts, ends } = req.query;
 
     const auth = req.headers.authorization || '';
 
     const transactions = await this._service.getAll(
       auth,
-      filter as TransactionFilter,
-      req.body,
+      filter as TransactionFilter | undefined,
+      starts as string | undefined,
+      ends as string | undefined,
     );
 
     res.status(StatusCodes.OK).json(transactions);
