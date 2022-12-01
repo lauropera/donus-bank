@@ -4,35 +4,50 @@ import { FiSend } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { RiWallet3Fill } from 'react-icons/ri';
 import { MdAttachMoney } from 'react-icons/md';
-import { useApi } from '../hooks/useApi';
 import { getToken, removeToken } from '../utils/tokenStorage';
-
 import Modal from '../components/Modal';
 import Header from '../components/Header';
 import DepositForm from '../components/DepositForm';
 import ActionButton from '../components/ActionButton';
 import TransactionForm from '../components/TransactionForm';
+import requests from '../services/requests';
 
 const BAD_REQUEST_STATUS = 400;
 
 function UserHome() {
+  const navigate = useNavigate();
+  const [data, setData] = useState({});
+  const [errorStatus, setErrorStatus] = useState(0);
+  const [refresh, setRefresh] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
   const [showModal, setShowModal] = useState({
     deposit: false,
     transfer: false,
   });
-  const { data, isFetching, errorStatus, setRefresh } = useApi('/auth/me');
-  const navigate = useNavigate();
 
   const handleModal = (type) => {
     setShowModal({ ...showModal, [type]: !showModal[type] });
   };
 
+  const getData = async () => {
+    try {
+      const userData = await requests.get.getUser();
+      setData(userData);
+    } catch (error) {
+      setErrorStatus(error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
   useEffect(() => {
+    getData();
+
     if (!getToken() || errorStatus === BAD_REQUEST_STATUS) {
       removeToken();
       return navigate('/');
     }
-  }, [errorStatus]);
+  }, [errorStatus, refresh]);
 
   return (
     <div className='font-body'>

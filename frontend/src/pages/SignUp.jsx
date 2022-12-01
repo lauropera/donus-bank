@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,26 +7,7 @@ import requests from '../services/requests';
 import { maskCPFInput, formatCPF } from '../utils/cpfUtils';
 import FormInput from '../components/FormInput';
 import SignedUpModal from '../components/SignedUpModal';
-
-const CPF_REGEX = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}/;
-
-const SignUpSchema = yup.object().shape({
-  name: yup
-    .string()
-    .min(3, 'No mínimo 3 caracteres')
-    .max(14, 'Máximo 14 caracteres')
-    .required('O nome é obrigatório'),
-  lastName: yup
-    .string()
-    .min(3, 'No mínimo 3 caracteres')
-    .required('O sobrenome é obrigatório'),
-  cpf: yup
-    .string()
-    .matches(CPF_REGEX, 'CPF inválido')
-    .required('O CPF é obrigatório'),
-  email: yup.string().email('Email inválido').required('O email é obrigatório'),
-  password: yup.string().min(4, 'No mínimo 4 caracteres').required(),
-});
+import { SignUpSchema } from '../services/schemas';
 
 function SignUp() {
   const navigate = useNavigate();

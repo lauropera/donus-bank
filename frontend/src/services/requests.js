@@ -1,10 +1,19 @@
 import { api } from '../lib/axios';
+import { getToken } from '../utils/tokenStorage';
 
 export const setTokenHeaders = (token) => {
   api.defaults.headers.common.Authorization = token;
 };
 
 const requests = {
+  get: {
+    getUser: async () => {
+      setTokenHeaders(getToken());
+
+      const { data } = await api.get('/auth/me');
+      return data;
+    },
+  },
   post: {
     login: async (body) => {
       const { data } = await api.post('/auth/login', body);
@@ -15,11 +24,7 @@ const requests = {
       return data;
     },
     transaction: async (body, method) => {
-      const data = await api.post(
-        `/transactions/new?transferType=${method}`,
-        body
-      );
-      return data;
+      await api.post(`/transactions/new?transferType=${method}`, body);
     },
   },
   patch: {

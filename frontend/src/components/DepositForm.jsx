@@ -1,5 +1,4 @@
 import React from 'react';
-import * as yup from 'yup';
 import { func } from 'prop-types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -7,15 +6,7 @@ import requests from '../services/requests';
 import FormInput from './FormInput';
 import Button from './Button';
 import CancelButton from './CancelButton';
-
-const DepositSchema = yup.object().shape({
-  value: yup
-    .number()
-    .min(0.01, 'O valor mínimo é de R$0,01')
-    .max(2000, 'O valor máximo é de R$2000,00')
-    .required('O valor é obrigatório')
-    .typeError('O valor precisa ser um número'),
-});
+import { DepositSchema } from '../services/schemas';
 
 function DepositForm({ handleModal, refreshBalance }) {
   const {

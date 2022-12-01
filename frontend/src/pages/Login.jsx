@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,14 +6,8 @@ import donusLogo from '../assets/logo.png';
 import { getToken } from '../utils/tokenStorage';
 import requests, { setTokenHeaders } from '../services/requests';
 import FormInput from '../components/FormInput';
+import { LoginSchema } from '../services/schemas';
 
-const LoginSchema = yup.object().shape({
-  email: yup.string().email('Email inválido').required('O email é obrigatório'),
-  password: yup
-    .string()
-    .min(4, 'No mínimo 4 caracteres')
-    .required('A senha é obrigatória'),
-});
 
 function Login() {
   const navigate = useNavigate();

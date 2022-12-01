@@ -1,3 +1,5 @@
+export const CPF_REGEX = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}/;
+
 export const maskCPFInput = ({ target }) => {
   const formattedCpf = target.value
     .replace(/[^\d]/g, '')

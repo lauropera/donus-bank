@@ -1,36 +1,13 @@
 import { useEffect, useState } from 'react';
-import * as yup from 'yup';
 import { func } from 'prop-types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Button from './Button';
 import FormInput from './FormInput';
 import { maskCPFInput, formatCPF } from '../utils/cpfUtils';
+import { CPFSchema, EmailSchema, transactionSchema } from '../services/schemas';
 import CancelButton from './CancelButton';
 import requests from '../services/requests';
-
-const CPF_REGEX = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}/;
-
-const EmailSchema = yup.object().shape({
-  email: yup.string().email('Email inválido').required('O email é obrigatório'),
-});
-
-const CPFSchema = yup.object().shape({
-  cpf: yup
-    .string()
-    .matches(CPF_REGEX, 'CPF inválido')
-    .required('O CPF é obrigatório'),
-});
-
-const ValueSchema = yup.object().shape({
-  value: yup
-    .number()
-    .min(0.01, 'O valor mínimo é de R$0,01')
-    .required('O valor é obrigatório')
-    .typeError('O valor precisa ser um número'),
-});
-
-const transactionSchema = (method) => method.concat(ValueSchema);
 
 const isMethodEmail = (transferMethod) => {
   return transferMethod === 'email';
@@ -146,6 +123,6 @@ function TransactionForm({ handleModal, refreshBalance }) {
 TransactionForm.propTypes = {
   handleModal: func.isRequired,
   refreshBalance: func.isRequired,
-}
+};
 
 export default TransactionForm;
