@@ -3,12 +3,10 @@ import db from '../database/models';
 import Token from './utils/TokenUtils';
 import HttpException from '../utils/HttpException';
 import { depositSchema, transactionSchema } from './utils/validations/schemas';
-
 import User from '../database/models/User';
 import Transaction from '../database/models/Transaction';
 import TransactionType from '../database/models/TransactionType';
 import Account from '../database/models/Account';
-
 import IDateFilter from '../interfaces/IDateFilter';
 import ITransaction, {
   ITransactionCreation,
@@ -19,6 +17,13 @@ import ITransaction, {
 
 const DEPOSIT_TYPE_ID = 1;
 const TRANSFER_TYPE_ID = 2;
+
+const setAccountIncludeOptions = (accountUser: string) => ({
+  model: Account,
+  as: accountUser,
+  attributes: { exclude: ['balance'] },
+  include: [{ model: User, as: 'user', attributes: ['name'] }],
+});
 
 class TransactionService {
   private _model = Transaction;
@@ -65,8 +70,8 @@ class TransactionService {
         exclude: ['ownerAccountId', 'receiverAccountId', 'transactionTypeId'],
       },
       include: [
-        { model: Account, as: 'ownerAccount' },
-        { model: Account, as: 'receiverAccount' },
+        setAccountIncludeOptions('ownerAccount'),
+        setAccountIncludeOptions('receiverAccount'),
         {
           model: TransactionType,
           as: 'transactionType',
