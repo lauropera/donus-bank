@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import requests, { setTokenHeaders } from '../services/requests';
-import FormInput from '../components/FormInput';
+import { useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
 import donusLogo from '../assets/logo.png';
 import { getToken } from '../utils/tokenStorage';
+import requests, { setTokenHeaders } from '../services/requests';
+import FormInput from '../components/FormInput';
 
-const loginSchema = yup.object().shape({
+const LoginSchema = yup.object().shape({
   email: yup.string().email('Email inválido').required('O email é obrigatório'),
   password: yup
     .string()
@@ -24,7 +24,7 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(LoginSchema),
   });
 
   useEffect(() => {

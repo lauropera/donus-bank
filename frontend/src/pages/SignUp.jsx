@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
 import donusLogo from '../assets/logo.png';
-import FormInput from '../components/FormInput';
 import requests from '../services/requests';
+import { maskCPFInput, formatCPF } from '../utils/cpfUtils';
+import FormInput from '../components/FormInput';
 import SignedUpModal from '../components/SignedUpModal';
 
 const CPF_REGEX = /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}-?[0-9]{2}/;
 
-const signUpSchema = yup.object().shape({
+const SignUpSchema = yup.object().shape({
   name: yup
     .string()
     .min(3, 'No mínimo 3 caracteres')
@@ -37,17 +38,8 @@ function SignUp() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(signUpSchema),
+    resolver: yupResolver(SignUpSchema),
   });
-
-  const cpfMask = ({ target }) => {
-    const formattedCpf = target.value
-      .replace(/[^\d]/g, '')
-      .replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    return (target.value = formattedCpf);
-  };
-
-  const formatCpf = (cpf) => cpf.replace(/[^0-9,]*/g, '').replace(',', '.');
 
   const redirectToLogin = () => {
     const THREE_SECONDS = 3000;
@@ -61,7 +53,7 @@ function SignUp() {
     try {
       const user = {
         name: `${name} ${lastName}`,
-        cpf: formatCpf(cpf),
+        cpf: formatCPF(cpf),
         email,
         password,
       };
@@ -115,7 +107,7 @@ function SignUp() {
               errors={errors}
               registerInput={{
                 ...register('cpf', {
-                  onChange: (event) => cpfMask(event),
+                  onChange: (event) => maskCPFInput(event),
                 }),
               }}
             />

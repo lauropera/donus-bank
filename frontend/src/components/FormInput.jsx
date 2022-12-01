@@ -4,7 +4,10 @@ import { string, shape } from 'prop-types';
 function FormInput({ labelText, name, id, type, errors, registerInput }) {
   return (
     <div>
-      <label className='block mb-2 font-medium text-emerald-900' htmlFor={id}>
+      <label
+        className='block mb-2 font-medium text-emerald-900'
+        htmlFor={id}
+      >
         {labelText}
       </label>
 
@@ -15,7 +18,7 @@ function FormInput({ labelText, name, id, type, errors, registerInput }) {
         name={name}
         id={id}
         type={type}
-        step={name === 'balance' ? '0.01' : 0}
+        step={name === 'value' ? '0.01' : '0'}
         maxLength={name === 'cpf' ? 14 : ''}
         {...registerInput}
       />

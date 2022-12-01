@@ -1,4 +1,4 @@
-import { string, any } from 'prop-types';
+import { string, element, func } from 'prop-types';
 
 function ActionButton({ text, color, icon, handleClick }) {
   return (
@@ -15,15 +15,20 @@ function ActionButton({ text, color, icon, handleClick }) {
       >
         {icon}
       </button>
-      <p>{text}</p>
+      <p className='cursor-default'>{text}</p>
     </div>
   );
 }
 
+ActionButton.defaultProps = {
+  handleClick: () => {},
+};
+
 ActionButton.propTypes = {
   text: string.isRequired,
   color: string.isRequired,
-  icon: any.isRequired,
+  icon: element.isRequired,
+  handleClick: func,
 };
 
 export default ActionButton;

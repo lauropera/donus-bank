@@ -11,8 +11,8 @@ function SignedUpModal({ visible }) {
       flex justify-center items-center`}
     >
       <div
-        className={`bg-slate-200 p-4 rounded
-        h-50 flex justify-evenly items-center flex-col gap-1`}
+        className={`bg-slate-200 p-4 rounded w-80
+        h-max flex justify-evenly items-center flex-col gap-1`}
       >
         <FcCheckmark size={80} />
         <h1 className='mb-2 font-medium'>Usuário cadastrado com sucesso!</h1>

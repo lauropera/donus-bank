@@ -14,11 +14,17 @@ const requests = {
       const { data } = await api.post('/auth/register', body);
       return data;
     },
+    transaction: async (body, method) => {
+      const data = await api.post(
+        `/transactions/new?transferType=${method}`,
+        body
+      );
+      return data;
+    },
   },
   patch: {
     deposit: async (body) => {
-      const { data } = await api.patch('/transactions/deposit', body);
-      return data;
+      await api.patch('/transactions/deposit', body);
     },
   },
 };
