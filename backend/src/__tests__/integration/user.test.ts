@@ -48,4 +48,15 @@ describe('Testes de integração endpoint POST "/auth/me"', () => {
       message: 'Usuário não encontrado',
     });
   });
+
+  it('Retorna o status 400 (BAD_REQUEST) se o token for inválido', async () => {
+    chaiHttpResponse = await request(app)
+      .get('/auth/me')
+      .set('Authorization', 'invalidtoken');
+
+    expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
+    expect(chaiHttpResponse.body).to.deep.eq({
+      message: 'Token inválido',
+    });
+  });
 });
