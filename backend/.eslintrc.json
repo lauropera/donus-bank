@@ -18,33 +18,25 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": [
-    "@typescript-eslint",
-    "sonarjs",
-    "mocha"
-  ],
+  "plugins": ["@typescript-eslint", "sonarjs", "mocha"],
   "rules": {
     "no-underscore-dangle": "off",
     "no-console": "off",
     "camelcase": "warn",
-    "arrow-parens": [
-      2,
-      "always"
-    ],
-    "quotes": [
-      2,
-      "single"
-    ],
+    "arrow-parens": [2, "always"],
+    "quotes": [2, "single"],
     "implicit-arrow-linebreak": "off",
     "consistent-return": "off",
     "@typescript-eslint/naming-convention": [
-      "error", { 
+      "error",
+      {
         "selector": "property",
         "format": ["strictCamelCase"],
         "filter": {
-        "regex": "^_",
-        "match": false
-      } }
+          "regex": "^_",
+          "match": false
+        }
+      }
     ],
     "@typescript-eslint/no-unused-vars": [
       "error",
@@ -53,7 +45,11 @@
         "ignoreRestSiblings": true
       }
     ],
-    "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+    "@typescript-eslint/lines-between-class-members": [
+      "error",
+      "always",
+      { "exceptAfterSingleLine": true }
+    ],
     "no-unused-vars": [
       "error",
       {
@@ -62,14 +58,8 @@
       }
     ],
     "object-curly-newline": "off",
-    "max-params": [
-      "error",
-      4
-    ],
-    "max-lines": [
-      "error",
-      250
-    ],
+    "max-params": ["error", 4],
+    "max-lines": ["error", 250],
     "max-lines-per-function": [
       "error",
       {
@@ -85,64 +75,24 @@
         "ignoreComments": true
       }
     ],
-    "complexity": [
-      "error",
-      12
-    ],
-    "import/no-extraneous-dependencies": [
-      "off"
-    ],
-    "sonarjs/cognitive-complexity": [
-      "error",
-      12
-    ],
-    "sonarjs/no-one-iteration-loop": [
-      "error"
-    ],
-    "sonarjs/no-identical-expressions": [
-      "error"
-    ],
-    "sonarjs/no-use-of-empty-return-value": [
-      "error"
-    ],
-    "sonarjs/no-extra-arguments": [
-      "error"
-    ],
-    "sonarjs/no-identical-conditions": [
-      "error"
-    ],
-    "sonarjs/no-collapsible-if": [
-      "error"
-    ],
-    "sonarjs/no-collection-size-mischeck": [
-      "error"
-    ],
-    "sonarjs/no-duplicate-string": [
-      "error"
-    ],
-    "sonarjs/no-duplicated-branches": [
-      "error"
-    ],
-    "sonarjs/no-identical-functions": [
-      "error"
-    ],
-    "sonarjs/no-redundant-boolean": [
-      "error"
-    ],
-    "sonarjs/no-unused-collection": [
-      "error"
-    ],
-    "sonarjs/no-useless-catch": [
-      "error"
-    ],
-    "sonarjs/prefer-object-literal": [
-      "error"
-    ],
-    "sonarjs/prefer-single-boolean-return": [
-      "error"
-    ],
-    "sonarjs/no-inverted-boolean-check": [
-      "error"
-    ]
+    "complexity": ["error", 12],
+    "import/no-extraneous-dependencies": ["off"],
+    "sonarjs/cognitive-complexity": ["error", 12],
+    "sonarjs/no-one-iteration-loop": ["error"],
+    "sonarjs/no-identical-expressions": ["error"],
+    "sonarjs/no-use-of-empty-return-value": ["error"],
+    "sonarjs/no-extra-arguments": ["error"],
+    "sonarjs/no-identical-conditions": ["error"],
+    "sonarjs/no-collapsible-if": ["error"],
+    "sonarjs/no-collection-size-mischeck": ["error"],
+    "sonarjs/no-duplicate-string": ["error"],
+    "sonarjs/no-duplicated-branches": ["error"],
+    "sonarjs/no-identical-functions": ["error"],
+    "sonarjs/no-redundant-boolean": ["error"],
+    "sonarjs/no-unused-collection": ["error"],
+    "sonarjs/no-useless-catch": ["error"],
+    "sonarjs/prefer-object-literal": ["error"],
+    "sonarjs/prefer-single-boolean-return": ["error"],
+    "sonarjs/no-inverted-boolean-check": ["error"]
   }
 }
