@@ -26,7 +26,7 @@ function DepositForm({ handleModal, refreshBalance }) {
   };
 
   const onSubmit = async (values) => {
-    await requests.patch.deposit(values);
+    await requests.post.deposit(values);
 
     refreshBalance();
     handleModal();

@@ -30,10 +30,8 @@ const requests = {
     transaction: async (body, method) => {
       await api.post(`/transactions/new?transferType=${method}`, body);
     },
-  },
-  patch: {
     deposit: async (body) => {
-      await api.patch('/transactions/deposit', body);
+      await api.post('/transactions/deposit', body);
     },
   },
 };
