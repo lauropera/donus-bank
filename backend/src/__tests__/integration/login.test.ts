@@ -22,7 +22,7 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
   after(() => sinon.restore());
 
   describe('Com sucesso', () => {
-    it('Retorna um token e status 200 (OK)', async () => {
+    it('Retorna o status 200 (OK) e um token', async () => {
       sinon.stub(User, 'findOne').resolves(userMock as User);
       sinon.stub(jwt, 'sign').resolves('generatedToken');
 
