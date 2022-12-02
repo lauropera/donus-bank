@@ -4,13 +4,13 @@ import { FiSend } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { RiWallet3Fill } from 'react-icons/ri';
 import { MdAttachMoney } from 'react-icons/md';
-import { getToken, removeToken } from '../utils/tokenStorage';
-import Modal from '../components/Modal';
-import Header from '../components/Header';
-import DepositForm from '../components/DepositForm';
-import ActionButton from '../components/ActionButton';
-import TransactionForm from '../components/TransactionForm';
-import useApiGet from '../hooks/useApiGet';
+import { getToken, removeToken } from '../../utils/tokenStorage';
+import Modal from '../../components/Modal';
+import Header from '../../components/Header';
+import useApiGet from '../../hooks/useApiGet';
+import DepositForm from './DepositForm';
+import TransactionForm from './TransactionForm';
+import ActionButton from './ActionButton';
 
 const BAD_REQUEST_STATUS = 400;
 

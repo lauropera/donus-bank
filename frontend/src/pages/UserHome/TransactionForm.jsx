@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import Button from './Button';
-import FormInput from './FormInput';
-import CancelButton from './CancelButton';
-import requests from '../services/requests';
-import moneyFormat from '../utils/moneyFormat';
-import { maskCPFInput, formatCPF } from '../utils/cpfUtils';
-import { CPFSchema, EmailSchema, transactionSchema } from '../services/schemas';
+import Button from '../../components/Button';
+import FormInput from '../../components/FormInput';
+import CancelButton from '../../components/CancelButton';
+import requests from '../../services/requests';
+import moneyFormat from '../../utils/moneyFormat';
+import { maskCPFInput, formatCPF } from '../../utils/cpfUtils';
+import { CPFSchema, EmailSchema, transactionSchema } from '../../services/schemas';
 
 const isMethodEmail = (transferMethod) => {
   return transferMethod === 'email';

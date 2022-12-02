@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import requests from '../services/requests';
-import FormInput from './FormInput';
-import Button from './Button';
-import CancelButton from './CancelButton';
-import { DepositSchema } from '../services/schemas';
-import moneyFormat from '../utils/moneyFormat';
+import requests from '../../services/requests';
+import FormInput from '../../components/FormInput';
+import Button from '../../components/Button';
+import CancelButton from '../../components/CancelButton';
+import { DepositSchema } from '../../services/schemas';
+import moneyFormat from '../../utils/moneyFormat';
 
 function DepositForm({ handleModal, refreshBalance }) {
   const [value, setValue] = useState('');

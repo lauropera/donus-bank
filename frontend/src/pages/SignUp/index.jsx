@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import donusLogo from '../assets/logo.png';
-import requests from '../services/requests';
-import { maskCPFInput, formatCPF } from '../utils/cpfUtils';
-import FormInput from '../components/FormInput';
-import SignedUpModal from '../components/SignedUpModal';
-import { SignUpSchema } from '../services/schemas';
+import donusLogo from '../../assets/logo.png';
+import requests from '../../services/requests';
+import { maskCPFInput, formatCPF } from '../../utils/cpfUtils';
+import FormInput from '../../components/FormInput';
+import SignedUpModal from './SignedUpModal';
+import { SignUpSchema } from '../../services/schemas';
 
 function SignUp() {
   const navigate = useNavigate();
