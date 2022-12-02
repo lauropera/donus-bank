@@ -111,7 +111,7 @@ A documentação está disponivel através do Swagger. Acesse a rota http://loca
 
 <br />
 
-## Para você pode ver a cobertura dos testes utilize os seguintes comandos:
+### Para você pode ver a cobertura dos testes utilize os seguintes comandos:
 
 Entre no container do backend
 
