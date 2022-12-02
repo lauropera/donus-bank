@@ -5,8 +5,8 @@ import useApiGet from '../hooks/useApiGet';
 import DateInput from '../components/DateInput';
 
 const DATE_OBJ = {
-  start: null,
-  end: null,
+  start: undefined,
+  end: undefined,
 };
 
 function Transactions() {
@@ -15,14 +15,15 @@ function Transactions() {
   const [selectedDates, setSelectedDates] = useState(DATE_OBJ);
   const { data, isFetching, refresh, setRefresh } = useApiGet('transactions', {
     filter: filterOption,
-    startDate: selectedDates.start,
-    endDate: selectedDates.end,
+    starts: selectedDates.start,
+    ends: selectedDates.end,
   });
   const user = useApiGet('user');
 
   const formatDate = (date) => new Date(date).toLocaleDateString('zh-Hans-CN');
 
   const dateConfig = (date, dateType) => {
+    date = date === null ? undefined : date;
     setSelectedDates({ ...selectedDates, [dateType]: date });
     setDateFilters({ ...dateFilters, [dateType]: formatDate(date) });
   };
