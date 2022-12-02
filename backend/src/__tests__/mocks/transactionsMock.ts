@@ -15,6 +15,10 @@ export const newTransactionMocks = [
   }
 ];
 
+export const newDepositMock = {
+  value: 200,
+}
+
 export const invalidNewTransactionMocks = [
   {
     email: 'sebastianSebs.com',

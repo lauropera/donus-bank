@@ -56,7 +56,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       } as SequelizeTransaction);
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=email')
+        .post('/transactions/new?type=email')
         .send(newTransactionMocks[0])
         .set('Authorization', 'fictoken');
 
@@ -89,7 +89,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       } as SequelizeTransaction);
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=cpf')
+        .post('/transactions/new?type=cpf')
         .send(newTransactionMocks[1])
         .set('Authorization', 'fictoken');
 
@@ -105,7 +105,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
 
     it('Retorna o status 400 (BAD_REQUEST) se o email for inválido', async () => {
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=email')
+        .post('/transactions/new?type=email')
         .send(invalidNewTransactionMocks[0]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
@@ -114,7 +114,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
 
     it('Retorna o status 400 (BAD_REQUEST) se o CPF for inválido', async () => {
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=cpf')
+        .post('/transactions/new?type=cpf')
         .send(invalidNewTransactionMocks[1]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
@@ -123,7 +123,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
 
     it('Retorna o status 400 (BAD_REQUEST) se o valor for menor que 0.01', async () => {
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=email')
+        .post('/transactions/new?type=email')
         .send(invalidNewTransactionMocks[2]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
@@ -134,7 +134,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
 
     it('Retorna o status 400 (BAD_REQUEST) se faltarem campos', async () => {
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=email')
+        .post('/transactions/new?type=email')
         .send(invalidNewTransactionMocks[3]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
@@ -147,7 +147,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=email')
+        .post('/transactions/new?type=email')
         .send(invalidNewTransactionMocks[4]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
@@ -168,7 +168,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
         .resolves(undefined);
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=email')
+        .post('/transactions/new?type=email')
         .send(newTransactionMocks[0]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.NOT_FOUND);
@@ -189,7 +189,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
         .resolves(undefined);
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=cpf')
+        .post('/transactions/new?type=cpf')
         .send(newTransactionMocks[1]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.NOT_FOUND);
@@ -210,7 +210,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
         .resolves(newAccountResponseMock as Account);
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=email')
+        .post('/transactions/new?type=email')
         .send(newTransactionMocks[2]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.UNPROCESSABLE_ENTITY);
@@ -231,7 +231,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
         .resolves(newAccountResponseMock as Account);
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?transferType=email')
+        .post('/transactions/new?type=email')
         .send(newTransactionMocks[2]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.UNPROCESSABLE_ENTITY);
