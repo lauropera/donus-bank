@@ -35,13 +35,9 @@ class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
     const auth = req.headers.authorization || '';
 
-    const { transferType } = req.query;
+    const { type } = req.query;
 
-    await this._service.insert(
-      auth,
-      transferType as TransactionMethod,
-      req.body,
-    );
+    await this._service.insert(auth, type as TransactionMethod, req.body);
 
     res
       .status(StatusCodes.CREATED)

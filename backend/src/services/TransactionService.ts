@@ -13,6 +13,7 @@ import ITransaction, {
   TransactionFilter,
   TransactionMethod,
 } from '../interfaces/ITransaction';
+import { Schema } from 'joi';
 
 const DEPOSIT_TYPE_ID = 1;
 const TRANSFER_TYPE_ID = 2;
@@ -22,8 +23,11 @@ class TransactionService {
   private _userModel = User;
   private _accountModel = Account;
 
-  private static validateTransaction(data: ITransactionCreation): void {
-    const { error } = transactionSchema.validate(data);
+  private static validateTransaction(
+    schema: Schema,
+    data: ITransactionCreation | ITransactionDeposit
+  ): void {
+    const { error } = schema.validate(data);
     if (error) throw new HttpException(400, error.message);
   }
 
@@ -114,7 +118,7 @@ class TransactionService {
     transferType: TransactionMethod,
     transactionData: ITransactionCreation
   ): Promise<void> {
-    TransactionService.validateTransaction(transactionData);
+    TransactionService.validateTransaction(transactionSchema, transactionData);
 
     const { id } = await Token.authenticate(token);
 
@@ -178,14 +182,13 @@ class TransactionService {
   }
 
   async deposit(token: string, deposit: ITransactionDeposit): Promise<void> {
+    TransactionService.validateTransaction(depositSchema, deposit);
+
     const { id } = await Token.authenticate(token);
 
-    const validation = depositSchema.validate(deposit);
-    if (validation.error || !deposit) {
-      throw new HttpException(400, validation.error.message);
-    }
+    const userAccount = (await this._accountModel.findByPk(id));
 
-    const userAccount = await this._accountModel.findByPk(id) as Account;
+    if (!userAccount) throw new HttpException(404, 'Conta não encontrada');
 
     const transaction = await db.transaction();
     try {
