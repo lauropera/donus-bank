@@ -17,7 +17,7 @@ function Transactions() {
   const {
     data: user,
     errorStatus,
-    isFetching: isUserFetching
+    isFetching: isUserFetching,
   } = useApiGet('user');
   const {
     data: transactions,
