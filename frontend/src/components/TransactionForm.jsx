@@ -31,7 +31,7 @@ function TransactionForm({ handleModal, refreshBalance }) {
 
   useEffect(() => {
     setErrorMsg('');
-    reset({ email: '', cpf: '', value: 0 });
+    reset({ email: '', cpf: '', value: '' });
   }, [method]);
 
   const onSubmit = async (data) => {
@@ -44,7 +44,7 @@ function TransactionForm({ handleModal, refreshBalance }) {
       refreshBalance();
       setErrorMsg('');
       handleModal();
-      reset({ email: '', cpf: '', value: 0 });
+      reset({ email: '', cpf: '', value: '' });
     } catch (error) {
       setErrorMsg(error.response.data.message);
     }
@@ -73,6 +73,7 @@ function TransactionForm({ handleModal, refreshBalance }) {
             labelText='Email'
             name='email'
             id='email'
+            placeholder='pessoa@email.com'
             type='text'
             errors={errors}
             registerInput={{ ...register('email') }}
@@ -82,6 +83,7 @@ function TransactionForm({ handleModal, refreshBalance }) {
             labelText='CPF'
             name='cpf'
             id='cpf'
+            placeholder='000.000.000-00'
             type='text'
             maxLength='14'
             errors={errors}
@@ -97,7 +99,8 @@ function TransactionForm({ handleModal, refreshBalance }) {
           labelText='Insira o valor'
           name='value'
           id='value'
-          type='number'
+          type='text'
+          placeholder='0,00'
           step='0.01'
           errors={errors}
           registerInput={{ ...register('value') }}

@@ -31,7 +31,7 @@ function Transaction({
       </div>
 
       <div className='flex justify-between w-full items-center'>
-        <p className='w-1/2'>{name}</p>
+        <p className='w-1/2'>{name.split(' ')[0]}</p>
 
         <div className='flex flex-col items-end'>
           <p

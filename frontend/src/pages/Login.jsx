@@ -54,6 +54,7 @@ function Login() {
               labelText='Email'
               name='email'
               id='email'
+              placeholder='pessoa@email.com'
               type='text'
               errors={errors}
               registerInput={{ ...register('email') }}
@@ -64,6 +65,7 @@ function Login() {
               name='password'
               id='password'
               type='password'
+              placeholder='Sua senha'
               errors={errors}
               registerInput={{ ...register('password') }}
             />

@@ -33,6 +33,7 @@ function DepositForm({ handleModal, refreshBalance }) {
         name='value'
         id='value'
         type='text'
+        placeholder='0,00'
         step='0.01'
         errors={errors}
         registerInput={{ ...register('value') }}

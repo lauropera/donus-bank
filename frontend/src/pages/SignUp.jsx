@@ -22,11 +22,11 @@ function SignUp() {
   });
 
   const redirectToLogin = () => {
-    const THREE_SECONDS = 3000;
+    const TWO_SECONDS = 2000;
     setSignedUp(true);
     setTimeout(() => {
       navigate('/');
-    }, THREE_SECONDS);
+    }, TWO_SECONDS);
   };
 
   const onSubmit = async ({ name, lastName, cpf, email, password }) => {
@@ -67,6 +67,7 @@ function SignUp() {
                 labelText='Nome'
                 name='name'
                 id='name'
+                placeholder='Nome'
                 type='text'
                 maxLength='14'
                 errors={errors}
@@ -76,6 +77,7 @@ function SignUp() {
               <FormInput
                 labelText='Sobrenome'
                 name='lastName'
+                placeholder='Sobrenome'
                 id='lastName'
                 type='text'
                 errors={errors}
@@ -87,6 +89,7 @@ function SignUp() {
               labelText='CPF'
               name='cpf'
               id='cpf'
+              placeholder='000.000.000-00'
               type='text'
               maxLength='14'
               errors={errors}
@@ -102,6 +105,7 @@ function SignUp() {
               name='email'
               id='email'
               type='text'
+              placeholder='pessoa@email.com'
               errors={errors}
               registerInput={{ ...register('email') }}
             />
@@ -111,6 +115,7 @@ function SignUp() {
               name='password'
               id='password'
               type='password'
+              placeholder='Sua senha'
               errors={errors}
               registerInput={{ ...register('password') }}
             />
