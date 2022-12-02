@@ -16,7 +16,7 @@ import { userWithAccountMock } from '../mocks/userMock';
 
 const { app } = new App();
 
-describe('Testes de integração endpoint POST "/auth/me"', () => {
+describe('Testes de integração endpoint GET "/auth/me"', () => {
   let chaiHttpResponse: Response;
 
   afterEach(() => sinon.restore());
