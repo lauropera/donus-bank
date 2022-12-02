@@ -1,5 +1,9 @@
 import cors from 'cors';
 import express from 'express';
+
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocs from './swagger.json';
+
 import authRoutes from './routes/authRoutes';
 import transactionRoutes from './routes/transactionRoutes';
 import httpErrorMiddleware from './middlewares/HttpErrorMiddleware';
@@ -32,6 +36,7 @@ class App {
 
     this.app.use('/auth', authRoutes);
     this.app.use('/transactions', transactionRoutes);
+    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
     this.app.use(httpErrorMiddleware);
   }

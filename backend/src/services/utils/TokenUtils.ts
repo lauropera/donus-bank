@@ -13,8 +13,10 @@ class Token {
   }
 
   static async authenticate(token: string): Promise<ITokenPayload> {
+    const bearerToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+    const tokenWithoutBearer = bearerToken.substring(7, bearerToken.length);
     try {
-      const payload = await jwt.verify(token, SECRET);
+      const payload = await jwt.verify(tokenWithoutBearer, SECRET);
       return payload as ITokenPayload;
     } catch (error) {
       throw new HttpException(400, 'Token inválido');

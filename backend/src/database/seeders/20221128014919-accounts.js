@@ -5,10 +5,10 @@ module.exports = {
   async up(queryInterface) {
     await queryInterface.bulkInsert('Accounts', [
       {
-        balance: 1221.06,
+        balance: 100,
       },
       {
-        balance: 2112.07,
+        balance: 25.60,
       },
     ]);
   },
