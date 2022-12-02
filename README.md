@@ -109,8 +109,6 @@ A documentação está disponivel através do Swagger. Acesse a rota http://loca
 <details>
 <summary>Acessar a cobertura de testes</summary>
 
-<br />
-
 ### Para você pode ver a cobertura dos testes utilize os seguintes comandos:
 
 Entre no container do backend
