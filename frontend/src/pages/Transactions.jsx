@@ -82,7 +82,7 @@ function Transactions() {
 
         <section
           className='w-full max-w-xs sm:max-w-sm md:max-w-lg
-        bg-slate-50 rounded p-5 h-4/6 overflow-scroll'
+        bg-slate-50 rounded p-5 h-4/6 overflow-x-auto'
         >
           {!isFetching && !user.isFetching && (
             <div className='flex flex-col gap-5'>
