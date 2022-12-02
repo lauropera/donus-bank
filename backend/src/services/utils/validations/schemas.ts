@@ -33,6 +33,8 @@ const passwordSchema = Joi.string().min(4).required().messages({
 export const loginSchema = Joi.object({
   email: emailSchema,
   password: passwordSchema,
+}).messages({
+  'object.unknown': 'Corpo de requisição inválido',
 });
 
 export const registerSchema = Joi.object({
