@@ -17,31 +17,6 @@ import ITransaction, {
 const DEPOSIT_TYPE_ID = 1;
 const TRANSFER_TYPE_ID = 2;
 
-const INCLUDE_OPTIONS = {
-  attributes: {
-    exclude: ['ownerAccountId', 'receiverAccountId', 'transactionTypeId'],
-  },
-  include: [
-    {
-      model: Account,
-      as: 'ownerAccount',
-      attributes: { exclude: ['balance'] },
-      include: [{ model: User, as: 'user', attributes: ['name'] }],
-    },
-    {
-      model: Account,
-      as: 'receiverAccount',
-      attributes: { exclude: ['balance'] },
-      include: [{ model: User, as: 'user', attributes: ['name'] }],
-    },
-    {
-      model: TransactionType,
-      as: 'transactionType',
-      attributes: { exclude: ['id'] },
-    },
-  ],
-};
-
 class TransactionService {
   private _model = Transaction;
   private _userModel = User;
@@ -106,7 +81,28 @@ class TransactionService {
     );
 
     const transactions = await this._model.findAll({
-      ...INCLUDE_OPTIONS,
+      attributes: {
+        exclude: ['ownerAccountId', 'receiverAccountId', 'transactionTypeId'],
+      },
+      include: [
+        {
+          model: Account,
+          as: 'ownerAccount',
+          attributes: { exclude: ['balance'] },
+          include: [{ model: User, as: 'user', attributes: ['name'] }],
+        },
+        {
+          model: Account,
+          as: 'receiverAccount',
+          attributes: { exclude: ['balance'] },
+          include: [{ model: User, as: 'user', attributes: ['name'] }],
+        },
+        {
+          model: TransactionType,
+          as: 'transactionType',
+          attributes: { exclude: ['id'] },
+        },
+      ],
       where: { ...filters },
     });
 
@@ -118,24 +114,20 @@ class TransactionService {
     transferType: TransactionMethod,
     transactionData: ITransactionCreation
   ): Promise<void> {
-    const { id } = await Token.authenticate(token);
-
     TransactionService.validateTransaction(transactionData);
 
-    const ownerUser = await this._userModel.findByPk(id) as User;
+    const { id } = await Token.authenticate(token);
+
+    const ownerUser = await this._userModel.findByPk(id);
     const receiverUser = await this._userModel.findOne({
       where: { [transferType]: transactionData[transferType] },
     });
 
-    if (!receiverUser) {
-      throw new HttpException(404, 'Destinatário não encontrado');
-    }
-
     const ownerAccount = await this._accountModel.findByPk(
-      ownerUser.accountId
+      ownerUser?.accountId
     );
     const receiverAccount = await this._accountModel.findByPk(
-      receiverUser.accountId
+      receiverUser?.accountId
     );
 
     if (!ownerAccount || !receiverAccount) {
@@ -153,7 +145,7 @@ class TransactionService {
     }
 
     if (ownerAccount.balance < transactionData.value) {
-      throw new HttpException(422, 'Saldo insuficiente');
+      throw new HttpException(422, 'Você não tem saldo suficiente');
     }
 
     const transaction = await db.transaction();

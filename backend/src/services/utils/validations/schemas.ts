@@ -59,6 +59,8 @@ export const transactionSchema = Joi.object({
       'any.required': REQUIRED_MSG,
       'number.min': MIN_MSG,
     }),
+}).messages({
+  'object.unknown': INVALID_BODY_MSG,
 });
 
 export const depositSchema = Joi.object({
