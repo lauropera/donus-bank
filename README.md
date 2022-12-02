@@ -111,7 +111,7 @@ A documentação está disponivel através do Swagger. Acesse a rota http://loca
 
 ### Para você pode ver a cobertura dos testes utilize os seguintes comandos:
 
-Entre no container do backend
+Entre no terminal container do backend
 
     docker exec -it backend_donus sh
 
@@ -119,7 +119,10 @@ Execute o comando para ver a cobertura
 
     npm run test:coverage
 
-
+Para poder sair do terminal do container execute o comando dentro do próprio
+    
+    exit
+    
 </details>
 
 ![Screenshot da cobertura de testes](./images/coverage.png)
