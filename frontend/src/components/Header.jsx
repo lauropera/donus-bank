@@ -1,10 +1,11 @@
 import React from 'react';
-import { IoMdExit } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
+import { IoMdExit, IoMdArrowBack } from 'react-icons/io';
+import { useLocation, useNavigate } from 'react-router-dom';
 import donusLogoAlt from '../assets/logo_alt.png';
 import { removeToken } from '../utils/tokenStorage';
 
 function Header() {
+  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const logout = () => {
@@ -15,8 +16,15 @@ function Header() {
   return (
     <header
       className='bg-emerald-600 h-14 w-screen justify-between
-    flex items-center fixed top-0 drop-shadow px-7'
+    flex items-center fixed top-0 drop-shadow p-2 md:px-7'
     >
+      {pathname === '/transactions' && (
+        <div className='flex gap-1 items-center text-white p-1'>
+          <button type='button' onClick={() => navigate('/user')}>
+            <IoMdArrowBack size={30} />
+          </button>
+        </div>
+      )}
       <div className='flex items-center h-full'>
         <div>
           <img
@@ -25,16 +33,22 @@ function Header() {
             src={donusLogoAlt}
           />
         </div>
-        <h1 className='font-bold text-white text-xl pl-1'>Donus Bank</h1>
+        <h1
+          className={`${
+            pathname === '/transactions' ? 'hidden' : ''
+          } sm:block font-bold text-white text-xl pl-1`}
+        >
+          Donus Bank
+        </h1>
       </div>
       <div className='flex gap-1 items-center text-white  p-1'>
         <button
-          className='flex gap-1'
+          className='flex flex-col sm:flex-row items-center'
           id='logout'
           type='button'
           onClick={logout}
         >
-          <IoMdExit className='h-6 w-6' />
+          <IoMdExit size={30} />
           Sair
         </button>
       </div>
