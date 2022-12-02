@@ -35,9 +35,13 @@ class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
     const auth = req.headers.authorization || '';
 
-    const { type } = req.query;
+    const { transferType } = req.query;
 
-    await this._service.insert(auth, type as TransactionMethod, req.body);
+    await this._service.insert(
+      auth,
+      transferType as TransactionMethod,
+      req.body,
+    );
 
     res
       .status(StatusCodes.CREATED)
@@ -49,7 +53,7 @@ class TransactionController {
 
     await this._service.deposit(auth, req.body);
     res
-      .status(StatusCodes.OK)
+      .status(StatusCodes.CREATED)
       .json({ message: 'Depósito realizado com sucesso' });
   }
 }
