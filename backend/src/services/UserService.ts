@@ -19,7 +19,7 @@ class UserService {
 
   private static validateCredentials(
     schema: Schema,
-    credentials: ILogin | IRegister,
+    credentials: ILogin | IRegister
   ): void {
     const { error } = schema.validate(credentials);
     if (error) throw new HttpException(400, error.message);
@@ -35,7 +35,7 @@ class UserService {
     if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
       throw new HttpException(
         401,
-        !user ? 'Email não cadastrado' : 'Email ou senha inválidos',
+        !user ? 'Email não cadastrado' : 'Email ou senha inválidos'
       );
     }
 
@@ -65,13 +65,13 @@ class UserService {
     try {
       const { id: accountId } = await this._accountModel.create(
         { balance: 0 },
-        { transaction },
+        { transaction }
       );
 
       const encryptedPassword = await bcrypt.hash(credentials.password, 8);
       await this._model.create(
         { ...credentials, password: encryptedPassword, accountId },
-        { transaction },
+        { transaction }
       );
 
       transaction.commit();
@@ -81,7 +81,7 @@ class UserService {
     }
   }
 
-  async getUser(auth: string): Promise<IUser> {
+  async getUser(auth: string | undefined): Promise<IUser> {
     const { id } = await this._tokenUtils.authenticate(auth);
 
     const user = await this._model.findOne({

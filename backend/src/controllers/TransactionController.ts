@@ -20,7 +20,7 @@ class TransactionController {
   async listAll(req: Request, res: Response): Promise<void> {
     const { filter, starts, ends } = req.query;
 
-    const auth = req.headers.authorization || '';
+    const auth = req.headers.authorization;
 
     const transactions = await this._service.getAll(
       auth,
@@ -33,7 +33,7 @@ class TransactionController {
   }
 
   async create(req: Request, res: Response): Promise<void> {
-    const auth = req.headers.authorization || '';
+    const auth = req.headers.authorization;
 
     const { transferType } = req.query;
 
@@ -49,7 +49,7 @@ class TransactionController {
   }
 
   async deposit(req: Request, res: Response): Promise<void> {
-    const auth = req.headers.authorization || '';
+    const auth = req.headers.authorization;
 
     await this._service.deposit(auth, req.body);
     res

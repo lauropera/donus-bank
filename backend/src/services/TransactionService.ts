@@ -70,7 +70,7 @@ class TransactionService {
   }
 
   async getAll(
-    token: string,
+    token: string | undefined,
     filterOption: TransactionFilter | undefined,
     startDate: string | undefined,
     endDate: string | undefined
@@ -114,7 +114,7 @@ class TransactionService {
   }
 
   async insert(
-    token: string,
+    token: string | undefined,
     transferType: TransactionMethod,
     transactionData: ITransactionCreation
   ): Promise<void> {
@@ -182,7 +182,10 @@ class TransactionService {
     }
   }
 
-  async deposit(token: string, deposit: ITransactionDeposit): Promise<void> {
+  async deposit(
+    token: string | undefined,
+    deposit: ITransactionDeposit
+  ): Promise<void> {
     TransactionService.validateTransaction(depositSchema, deposit);
 
     const { id } = await Token.authenticate(token);
