@@ -8,6 +8,7 @@ import { maskCPFInput, formatCPF } from '../utils/cpfUtils';
 import { CPFSchema, EmailSchema, transactionSchema } from '../services/schemas';
 import CancelButton from './CancelButton';
 import requests from '../services/requests';
+import moneyFormat from '../utils/moneyFormat';
 
 const isMethodEmail = (transferMethod) => {
   return transferMethod === 'email';
@@ -15,6 +16,7 @@ const isMethodEmail = (transferMethod) => {
 
 function TransactionForm({ handleModal, refreshBalance }) {
   const [method, setMethod] = useState('email');
+  const [value, setValue] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const {
     register,
@@ -33,6 +35,12 @@ function TransactionForm({ handleModal, refreshBalance }) {
     setErrorMsg('');
     reset({ email: '', cpf: '', value: '' });
   }, [method]);
+
+  const handleChange = ({ target }) => {
+    const amount = moneyFormat(target.value);
+    const DECIMAL_REGEX = /^\d*([,.]{0,1}\d{0,2})$/;
+    if (DECIMAL_REGEX.test(amount)) setValue(amount);
+  };
 
   const onSubmit = async (data) => {
     if (data?.cpf) data = { ...data, cpf: formatCPF(data.cpf) };
@@ -101,9 +109,13 @@ function TransactionForm({ handleModal, refreshBalance }) {
           id='value'
           type='text'
           placeholder='0,00'
-          step='0.01'
+          inputValue={value}
           errors={errors}
-          registerInput={{ ...register('value') }}
+          registerInput={{
+            ...register('value', {
+              onChange: (e) => handleChange(e),
+            }),
+          }}
         />
 
         <div>

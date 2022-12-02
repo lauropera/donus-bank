@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { func } from 'prop-types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -7,8 +7,10 @@ import FormInput from './FormInput';
 import Button from './Button';
 import CancelButton from './CancelButton';
 import { DepositSchema } from '../services/schemas';
+import moneyFormat from '../utils/moneyFormat';
 
 function DepositForm({ handleModal, refreshBalance }) {
+  const [value, setValue] = useState('');
   const {
     register,
     handleSubmit,
@@ -17,6 +19,12 @@ function DepositForm({ handleModal, refreshBalance }) {
   } = useForm({
     resolver: yupResolver(DepositSchema),
   });
+
+  const handleChange = ({ target }) => {
+    const amount = moneyFormat(target.value);
+    const DECIMAL_REGEX = /^\d*([,.]{0,1}\d{0,2})$/;
+    if (DECIMAL_REGEX.test(amount)) setValue(amount);
+  };
 
   const onSubmit = async (values) => {
     await requests.patch.deposit(values);
@@ -34,9 +42,13 @@ function DepositForm({ handleModal, refreshBalance }) {
         id='value'
         type='text'
         placeholder='0,00'
-        step='0.01'
         errors={errors}
-        registerInput={{ ...register('value') }}
+        inputValue={value}
+        registerInput={{
+          ...register('value', {
+            onChange: (e) => handleChange(e),
+          }),
+        }}
       />
 
       <div className='flex gap-3'>

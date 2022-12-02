@@ -9,7 +9,7 @@ function FormInput({
   errors,
   registerInput,
   placeholder,
-  step,
+  inputValue,
   maxLength,
 }) {
   return (
@@ -25,8 +25,8 @@ function FormInput({
         name={name}
         id={id}
         type={type}
+        value={inputValue}
         placeholder={placeholder}
-        step={step}
         maxLength={maxLength}
         {...registerInput}
       />
@@ -37,7 +37,6 @@ function FormInput({
 }
 
 FormInput.defaultProps = {
-  step: '',
   maxLength: '',
   placeholder: '',
 };
@@ -49,7 +48,6 @@ FormInput.propTypes = {
   type: string.isRequired,
   errors: shape({}).isRequired,
   registerInput: shape({}).isRequired,
-  step: string,
   maxLength: string,
   placeholder: string,
 };
