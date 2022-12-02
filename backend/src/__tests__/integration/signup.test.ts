@@ -31,7 +31,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
 
   describe('Com sucesso', () => {
     it('Retorna o status 201 (CREATED) e a mensagem "Usuário cadastrado com sucesso"', async () => {
-      sinon.stub(User, 'findOne').resolves(undefined);
+      sinon.stub(User, 'findAll').resolves([]);
       sinon.stub(Account, 'create').resolves(newAccountResponseMock as Account);
       sinon.stub(User, 'create').resolves(newUserResponseMock as User);
       sinon.stub(db, 'transaction').resolves({
