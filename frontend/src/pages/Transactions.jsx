@@ -39,10 +39,11 @@ function Transactions() {
         items-center gap-5 bg-slate-200'
       >
         <div
-          className='w-full max-w-xs mt-4 sm:max-w-sm
-          bg-slate-50 rounded py-3 px-4 h-32'
+          className='w-full max-w-xs mt-4 sm:max-w-sm flex
+          bg-slate-50 rounded py-3 px-4 h-32 md:max-w-lg
+          justify-center'
         >
-          <div className='flex gap-3 flex-col'>
+          <div className='flex gap-3 flex-col md:max-w-xs'>
             <div className='flex gap-2'>
               <label>
                 De:
@@ -66,9 +67,8 @@ function Transactions() {
             <label className='flex gap-2 items-center'>
               Tipo:
               <select
-                className='w-full px-2 py-1 border-b-2
-                  border-emerald-600 outline-none focus:bg-gray-300
-                  transition-all'
+                className='w-full px-2 py-1 border-b-2 transition-all
+                  border-emerald-600 outline-none focus:bg-gray-300'
                 onChange={(e) => setFilterOption(e.target.value)}
               >
                 <option value=''>Todas</option>
@@ -80,7 +80,7 @@ function Transactions() {
         </div>
 
         <section
-          className='w-full max-w-xs sm:max-w-sm
+          className='w-full max-w-xs sm:max-w-sm md:max-w-lg
         bg-slate-50 rounded p-5 h-4/6 overflow-scroll'
         >
           {!isFetching && !user.isFetching && (
