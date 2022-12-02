@@ -10,11 +10,13 @@ const MIN_MSG = 'O valor mínimo exigido é de R$0,01';
 
 const nameSchema = Joi.string().min(2).required().messages({
   'any.required': REQUIRED_MSG,
+  'string.empty': REQUIRED_MSG,
   'string.min': 'O nome precisa ter no mínimo 2 caracteres',
 });
 
 const emailSchema = Joi.string().email().required().messages({
   'any.required': REQUIRED_MSG,
+  'string.empty': REQUIRED_MSG,
   'string.email': EMAIL_MSG,
 });
 
@@ -24,6 +26,7 @@ const cpfSchema = Joi.document().cpf().required().messages({
 
 const passwordSchema = Joi.string().min(4).required().messages({
   'any.required': REQUIRED_MSG,
+  'string.empty': REQUIRED_MSG,
   'string.min': 'A senha precisa ter no mínimo 4 caracteres',
 });
 
