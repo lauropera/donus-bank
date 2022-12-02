@@ -36,7 +36,7 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
   describe('Com falhas', () => {
     afterEach(() => sinon.restore());
 
-    it('Retorna status 400 (BAD_REQUEST) se o email for inválido', async () => {
+    it('Retorna o status 400 (BAD_REQUEST) se o email for inválido', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/login')
         .send(invalidLoginMocks[0]);
@@ -45,7 +45,7 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
       expect(chaiHttpResponse.body).to.deep.eq({ message: 'Email inválido' });
     });
 
-    it('Retorna status 400 (BAD_REQUEST) se a senha não for passada', async () => {
+    it('Retorna o status 400 (BAD_REQUEST) se a senha não for passada', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/login')
         .send(invalidLoginMocks[1]);
@@ -56,7 +56,7 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
       });
     });
 
-    it('Retorna status 400 (BAD_REQUEST) se o corpo da requisição for inválido', async () => {
+    it('Retorna o status 400 (BAD_REQUEST) se o corpo da requisição for inválido', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/login')
         .send(invalidLoginMocks[2]);
