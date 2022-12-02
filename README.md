@@ -84,6 +84,15 @@ Para acessar o frontend, vá em seu navegador acesse a rota:
 
     http://localhost:3000
 
+## 4 - Usuários para fazer login
+
+Nessa aplicação é necessário fazer o login com um email e senha. A tabela abaixo disponibiliza usuários pré-cadastrados para o acesso:
+
+|        Email       |     Senha   |
+| ------------------ | :---------: |
+| mallu@artist.com   | sambinhabom |
+| sebastian@sebs.com | piano       |
+
 </details>
 <br />
 
