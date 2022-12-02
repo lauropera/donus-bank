@@ -18,12 +18,12 @@ export const invalidLoginMocks = [
   {
     email: loginMock.email,
     password: loginMock.password,
-    cpf: '12312312345'
+    cpf: '12312312345',
   },
   {
     email: loginMock.email,
     password: 'queroquero',
-  }
+  },
 ];
 
 export const userMock = {
@@ -34,3 +34,55 @@ export const userMock = {
   password: bcrypt.hashSync(loginMock.password, 8),
   accountId: 1,
 };
+
+export const newUserMock = {
+  name: 'Sebastian',
+  email: 'sebastian@sebs.com',
+  cpf: cpf.generate(),
+  password: 'sebslalaland',
+};
+
+export const newUserResponseMock = {
+  ...newUserMock,
+  password: bcrypt.hashSync(newUserMock.password, 8),
+  accountId: 2,
+};
+
+export const invalidNewUserMocks = [
+  {
+    name: 'S',
+    email: newUserMock.email,
+    cpf: newUserMock.cpf,
+    password: newUserMock.password,
+  },
+  {
+    name: newUserMock.name,
+    email: 'sebastianSebs.com',
+    cpf: newUserMock.cpf,
+    password: newUserMock.password,
+  },
+  {
+    name: newUserMock.name,
+    email: newUserMock.email,
+    cpf: '12312312345',
+    password: newUserMock.password,
+  },
+  {
+    name: newUserMock.name,
+    email: newUserMock.email,
+    cpf: newUserMock.cpf,
+    password: 'seb',
+  },
+  {
+    name: newUserMock.name,
+    cpf: newUserMock.cpf,
+    password: 'seb',
+  },
+  {
+    name: newUserMock.name,
+    email: newUserMock.email,
+    cpf: newUserMock.cpf,
+    password: newUserMock.password,
+    birthday: '21/07/2002'
+  },
+];

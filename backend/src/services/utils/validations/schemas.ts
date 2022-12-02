@@ -7,6 +7,7 @@ const Joi = joi.extend(validator);
 const REQUIRED_MSG = 'Campos obrigatórios faltando';
 const EMAIL_MSG = 'Email inválido';
 const MIN_MSG = 'O valor mínimo exigido é de R$0,01';
+const INVALID_BODY_MSG = 'Corpo de requisição inválido';
 
 const nameSchema = Joi.string().min(2).required().messages({
   'any.required': REQUIRED_MSG,
@@ -34,7 +35,7 @@ export const loginSchema = Joi.object({
   email: emailSchema,
   password: passwordSchema,
 }).messages({
-  'object.unknown': 'Corpo de requisição inválido',
+  'object.unknown': INVALID_BODY_MSG,
 });
 
 export const registerSchema = Joi.object({
@@ -42,6 +43,8 @@ export const registerSchema = Joi.object({
   email: emailSchema,
   cpf: cpfSchema,
   password: passwordSchema,
+}).messages({
+  'object.unknown': INVALID_BODY_MSG,
 });
 
 export const transactionSchema = Joi.object({
