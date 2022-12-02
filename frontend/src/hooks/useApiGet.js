@@ -4,8 +4,8 @@ import requests, { setTokenHeaders } from '../services/requests';
 
 function useApiGet(request, params) {
   const [data, setData] = useState([]);
-  const [errorStatus, setErrorStatus] = useState(0);
   const [refresh, setRefresh] = useState(false);
+  const [errorStatus, setErrorStatus] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {

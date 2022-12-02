@@ -4,20 +4,19 @@ import { FiSend } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { RiWallet3Fill } from 'react-icons/ri';
 import { MdAttachMoney } from 'react-icons/md';
-import { getToken, removeToken } from '../../utils/tokenStorage';
 import Modal from '../../components/Modal';
 import Header from '../../components/Header';
 import useApiGet from '../../hooks/useApiGet';
 import DepositForm from './DepositForm';
 import TransactionForm from './TransactionForm';
 import ActionButton from './ActionButton';
-
-const BAD_REQUEST_STATUS = 400;
+import useLogoutVerify from '../../hooks/useLogoutVerify';
 
 function UserHome() {
   const navigate = useNavigate();
   const { data, errorStatus, isFetching, refresh, setRefresh } =
     useApiGet('user');
+  useLogoutVerify(errorStatus);
   const [showModal, setShowModal] = useState({
     deposit: false,
     transfer: false,
@@ -26,13 +25,6 @@ function UserHome() {
   const handleModal = (type) => {
     setShowModal({ ...showModal, [type]: !showModal[type] });
   };
-
-  useEffect(() => {
-    if (!getToken() || errorStatus === BAD_REQUEST_STATUS) {
-      removeToken();
-      return navigate('/');
-    }
-  }, [errorStatus]);
 
   return (
     <div className='font-body'>
@@ -62,7 +54,7 @@ function UserHome() {
                 <div className='flex items-center gap-2'>
                   <RiWallet3Fill size={40} className='text-emerald-700' />
                   <p className='text-2xl font-bold text-slate-900'>
-                    {(data?.account?.balance).toLocaleString('pt-BR', {
+                    {data?.account?.balance.toLocaleString('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',
                     }) || 'R$0,00'}

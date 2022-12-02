@@ -3,6 +3,7 @@ import DateInput from './DateInput';
 import Transaction from './Transaction';
 import Header from '../../components/Header';
 import useApiGet from '../../hooks/useApiGet';
+import useLogoutVerify from '../../hooks/useLogoutVerify';
 
 const DATE_OBJ = {
   start: undefined,
@@ -13,12 +14,22 @@ function Transactions() {
   const [filterOption, setFilterOption] = useState('');
   const [dateFilters, setDateFilters] = useState(DATE_OBJ);
   const [selectedDates, setSelectedDates] = useState(DATE_OBJ);
-  const { data, isFetching, refresh, setRefresh } = useApiGet('transactions', {
+  const {
+    data: user,
+    errorStatus,
+    isFetching: isUserFetching
+  } = useApiGet('user');
+  const {
+    data: transactions,
+    isFetching,
+    refresh,
+    setRefresh,
+  } = useApiGet('transactions', {
     filter: filterOption,
     starts: selectedDates.start,
     ends: selectedDates.end,
   });
-  const user = useApiGet('user');
+  useLogoutVerify(errorStatus);
 
   const formatDate = (date) => new Date(date).toLocaleDateString('zh-Hans-CN');
 
@@ -84,9 +95,9 @@ function Transactions() {
           className='w-full max-w-xs sm:max-w-sm md:max-w-lg
         bg-slate-50 rounded p-5 h-4/6 overflow-x-auto'
         >
-          {!isFetching && !user.isFetching && (
+          {!isFetching && !isUserFetching && (
             <div className='flex flex-col gap-5'>
-              {data.map(
+              {transactions.map(
                 ({
                   id,
                   value,
@@ -98,7 +109,7 @@ function Transactions() {
                   return (
                     <Transaction
                       key={id}
-                      userId={user.data.id}
+                      userId={user.id}
                       value={value}
                       created={createdAt}
                       owner={ownerAccount}
