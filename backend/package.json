@@ -4,7 +4,7 @@
   "main": "./build/server",
   "scripts": {
     "build": "npx -y tsc",
-    "test": "mocha -r ts-node/register ./src/tests/**.test.ts -t 10000 --exit",
+    "test": "mocha -r ts-node/register ./src/__tests__/**/*$NAME*.test.ts -t 10000 --exit",
     "test:coverage": "nyc npm run test",
     "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
     "prestart": "npm run build && npm run db:reset",
