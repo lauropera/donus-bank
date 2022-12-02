@@ -42,6 +42,13 @@ export const newUserMock = {
   password: 'sebslalaland',
 };
 
+export const newUserMock2 = {
+  name: 'Sebastian',
+  email: 'sebastian_sebs@piano.com',
+  cpf: newUserMock.cpf,
+  password: 'sebslalaland',
+}
+
 export const newUserResponseMock = {
   ...newUserMock,
   password: bcrypt.hashSync(newUserMock.password, 8),

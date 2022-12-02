@@ -18,12 +18,13 @@ import { newAccountResponseMock } from '../mocks/accountMock';
 import {
   invalidNewUserMocks,
   newUserMock,
+  newUserMock2,
   newUserResponseMock,
 } from '../mocks/userMock';
 
 const { app } = new App();
 
-describe.only('Testes de integração endpoint POST "/auth/register"', () => {
+describe('Testes de integração endpoint POST "/auth/register"', () => {
   let chaiHttpResponse: Response;
 
   after(() => sinon.restore());
@@ -60,6 +61,36 @@ describe.only('Testes de integração endpoint POST "/auth/register"', () => {
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
       expect(chaiHttpResponse.body).to.deep.eq({
         message: 'O nome precisa ter no mínimo 2 caracteres',
+      });
+    });
+
+    it.only('Retorna o status 409 (CONFLICT) se o email já for cadastrado', async () => {
+      sinon
+        .stub(User, 'findAll')
+        .resolves([{ dataValues: { ...newUserResponseMock } }] as User[]);
+
+      chaiHttpResponse = await request(app)
+        .post('/auth/register')
+        .send(newUserMock);
+
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.CONFLICT);
+      expect(chaiHttpResponse.body).to.deep.eq({
+        message: 'Email já cadastrado',
+      });
+    });
+
+    it.only('Retorna o status 409 (CONFLICT) se o CPF já for cadastrado', async () => {
+      sinon
+        .stub(User, 'findAll')
+        .resolves([{ dataValues: { ...newUserResponseMock } }] as User[]);
+
+      chaiHttpResponse = await request(app)
+        .post('/auth/register')
+        .send(newUserMock2);
+
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.CONFLICT);
+      expect(chaiHttpResponse.body).to.deep.eq({
+        message: 'CPF já cadastrado',
       });
     });
 
