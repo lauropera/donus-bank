@@ -122,24 +122,25 @@ class TransactionService {
 
     const { id } = await Token.authenticate(token);
 
-    const ownerUser = await this._userModel.findByPk(id);
+    const ownerUser = (await this._userModel.findByPk(id)) as User;
     const receiverUser = await this._userModel.findOne({
       where: { [transferType]: transactionData[transferType] },
     });
 
-    const ownerAccount = await this._accountModel.findByPk(
-      ownerUser?.accountId
-    );
-    const receiverAccount = await this._accountModel.findByPk(
-      receiverUser?.accountId
-    );
-
-    if (!ownerAccount || !receiverAccount) {
+    if (!receiverUser) {
+      const typeError = transferType === 'cpf' ? 'CPF' : 'Email';
       throw new HttpException(
         404,
-        `Dados inválidos, verifique se o ${transferType} está correto`
+        `Conta destinatária não existente, verifique o ${typeError}`
       );
     }
+
+    const ownerAccount = (await this._accountModel.findByPk(
+      ownerUser.accountId
+    )) as Account;
+    const receiverAccount = (await this._accountModel.findByPk(
+      receiverUser.accountId
+    )) as Account;
 
     if (ownerAccount.id === receiverAccount.id) {
       throw new HttpException(
@@ -186,7 +187,7 @@ class TransactionService {
 
     const { id } = await Token.authenticate(token);
 
-    const userAccount = (await this._accountModel.findByPk(id));
+    const userAccount = await this._accountModel.findByPk(id);
 
     if (!userAccount) throw new HttpException(404, 'Conta não encontrada');
 
