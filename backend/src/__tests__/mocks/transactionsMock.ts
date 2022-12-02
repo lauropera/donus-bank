@@ -1,3 +1,43 @@
+import { cpf } from 'cpf-cnpj-validator';
+
+export const newTransactionMocks = [
+  {
+    email: 'sebastian@sebs.com',
+    value: 12,
+  },
+  {
+    cpf: cpf.generate(),
+    value: 55,
+  },
+  {
+    email: 'sebastian@sebs.com',
+    value: 2000,
+  }
+];
+
+export const invalidNewTransactionMocks = [
+  {
+    email: 'sebastianSebs.com',
+    value: 12,
+  },
+  {
+    cpf: '12312312345',
+    value: 20,
+  },
+  {
+    email: 'mallu@artist.com',
+    value: 0,
+  },
+  {
+    email: 'mallu@artist.com',
+  },
+  {
+    email: 'mallu@artist.com',
+    value: 10,
+    name: 'Mallu',
+  },
+];
+
 export const transactionsListMock = [
   {
     id: 1,
