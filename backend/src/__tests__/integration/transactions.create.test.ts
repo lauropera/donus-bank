@@ -159,42 +159,30 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
     it('Retorna o status 404 (NOT_FOUND) se o email destinatário não for encontrado', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(userMock as User);
-      sinon.stub(User, 'findOne').resolves({} as User);
-      sinon
-        .stub(Account, 'findByPk')
-        .onFirstCall()
-        .resolves(accountMock as Account)
-        .onSecondCall()
-        .resolves(undefined);
+      sinon.stub(User, 'findOne').resolves(undefined);
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?type=email')
+        .post('/transactions/new?transferType=email')
         .send(newTransactionMocks[0]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.NOT_FOUND);
       expect(chaiHttpResponse.body).to.deep.eq({
-        message: 'Dados inválidos, verifique se o email está correto',
+        message: 'Conta destinatária não existente, verifique o Email',
       });
     });
 
     it('Retorna o status 404 (NOT_FOUND) se o CPF destinatário não for encontrado', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(userMock as User);
-      sinon.stub(User, 'findOne').resolves({} as User);
-      sinon
-        .stub(Account, 'findByPk')
-        .onFirstCall()
-        .resolves(accountMock as Account)
-        .onSecondCall()
-        .resolves(undefined);
+      sinon.stub(User, 'findOne').resolves(undefined);
 
       chaiHttpResponse = await request(app)
-        .post('/transactions/new?type=cpf')
+        .post('/transactions/new?transferType=cpf')
         .send(newTransactionMocks[1]);
 
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.NOT_FOUND);
       expect(chaiHttpResponse.body).to.deep.eq({
-        message: 'Dados inválidos, verifique se o cpf está correto',
+        message: 'Conta destinatária não existente, verifique o CPF',
       });
     });
 
@@ -213,7 +201,9 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
         .post('/transactions/new?type=email')
         .send(newTransactionMocks[2]);
 
-      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.UNPROCESSABLE_ENTITY);
+      expect(chaiHttpResponse.status).to.be.eq(
+        StatusCodes.UNPROCESSABLE_ENTITY
+      );
       expect(chaiHttpResponse.body).to.deep.eq({
         message: 'Não é possível fazer uma transferência para si mesmo',
       });
@@ -234,9 +224,34 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
         .post('/transactions/new?type=email')
         .send(newTransactionMocks[2]);
 
-      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.UNPROCESSABLE_ENTITY);
+      expect(chaiHttpResponse.status).to.be.eq(
+        StatusCodes.UNPROCESSABLE_ENTITY
+      );
       expect(chaiHttpResponse.body).to.deep.eq({
         message: 'Você não tem saldo suficiente',
+      });
+    });
+
+    it('Retorna o status 400 (BAD_REQUEST) se a transação falhar', async () => {
+      sinon.stub(jwt, 'verify').resolves({ id: 1 });
+      sinon.stub(User, 'findByPk').resolves(userMock as User);
+      sinon.stub(User, 'findOne').resolves(newUserResponseMock as User);
+      sinon
+        .stub(db, 'transaction')
+        .rejects({
+          async commit() {},
+        } as SequelizeTransaction)
+        .resolves({
+          async rollback() {},
+        } as SequelizeTransaction);
+
+      chaiHttpResponse = await request(app)
+        .post('/transactions/new?type=email')
+        .send(newTransactionMocks[0]);
+
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
+      expect(chaiHttpResponse.body).to.deep.eq({
+        message: 'Houve um problema ao realizar a transação',
       });
     });
   });

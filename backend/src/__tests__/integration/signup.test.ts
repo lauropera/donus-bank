@@ -138,7 +138,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se  o corpo da requisição for inválido', async () => {
+    it('Retorna o status 400 (BAD_REQUEST) se o corpo da requisição for inválido', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/register')
         .send(invalidNewUserMocks[5]);
@@ -146,6 +146,24 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
       expect(chaiHttpResponse.body).to.deep.eq({
         message: 'Corpo de requisição inválido',
+      });
+    });
+
+    it('Retorna o status 400 (BAD_REQUEST) se o registro falhar', async () => {
+      sinon.stub(User, 'findAll').resolves([]);
+      sinon.stub(db, 'transaction').rejects({
+        async commit() {},
+      } as SequelizeTransaction).resolves({
+        async rollback() {},
+      } as SequelizeTransaction);
+
+      chaiHttpResponse = await request(app)
+        .post('/auth/register')
+        .send(newUserMock);
+
+      expect(chaiHttpResponse.status).to.be.eq(StatusCodes.BAD_REQUEST);
+      expect(chaiHttpResponse.body).to.deep.eq({
+        message: 'Houve um problema ao cadastrar o usuário',
       });
     });
   });
