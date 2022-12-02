@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Donus Bank",
-    "description": "Essa é uma API para as funcionalidades do Donus Bank. A autenticação é feita com JWT (JSON Web Token). Para acessar as rotas autenticadas, faça login ou crie um novo usuário para receber o token.",
+    "title": "Donus Bank API",
+    "description": "API para as funcionalidades do Donus Bank",
     "contact": {
       "email": "lauropereirasr01@gmail.com"
     },
