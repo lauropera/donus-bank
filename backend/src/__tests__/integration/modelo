@@ -17,9 +17,11 @@
 // describe('Testes de integração endpoint POST "/auth/login"', () => {
 //   let chaiHttpResponse: Response;
 
+//   after(() => sinon.restore());
+
 //   describe('Com sucesso', () => {});
 
 //   describe('Com falhas', () => {
-//     afterEach(() => sinon.restore());
-//   });
+//   afterEach(() => sinon.restore());
+// });
 // });

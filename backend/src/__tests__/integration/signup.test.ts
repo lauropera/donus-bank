@@ -64,7 +64,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it.only('Retorna o status 409 (CONFLICT) se o email já for cadastrado', async () => {
+    it('Retorna o status 409 (CONFLICT) se o email já for cadastrado', async () => {
       sinon
         .stub(User, 'findAll')
         .resolves([{ dataValues: { ...newUserResponseMock } }] as User[]);
@@ -79,7 +79,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it.only('Retorna o status 409 (CONFLICT) se o CPF já for cadastrado', async () => {
+    it('Retorna o status 409 (CONFLICT) se o CPF já for cadastrado', async () => {
       sinon
         .stub(User, 'findAll')
         .resolves([{ dataValues: { ...newUserResponseMock } }] as User[]);

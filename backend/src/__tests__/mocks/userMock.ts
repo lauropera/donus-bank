@@ -47,7 +47,18 @@ export const newUserMock2 = {
   email: 'sebastian_sebs@piano.com',
   cpf: newUserMock.cpf,
   password: 'sebslalaland',
-}
+};
+
+export const userWithAccountMock = {
+  id: userMock.id,
+  name: userMock.name,
+  email: userMock.email,
+  cpf: userMock.cpf,
+  account: {
+    id: userMock.accountId,
+    balance: 100,
+  },
+};
 
 export const newUserResponseMock = {
   ...newUserMock,
@@ -90,6 +101,6 @@ export const invalidNewUserMocks = [
     email: newUserMock.email,
     cpf: newUserMock.cpf,
     password: newUserMock.password,
-    birthday: '21/07/2002'
+    birthday: '21/07/2002',
   },
 ];
