@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { func } from 'prop-types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import requests from '../services/requests';
@@ -58,10 +57,5 @@ function DepositForm({ handleModal, refreshBalance }) {
     </form>
   );
 }
-
-DepositForm.propTypes = {
-  handleModal: func.isRequired,
-  refreshBalance: func.isRequired,
-};
 
 export default DepositForm;

@@ -1,5 +1,3 @@
-import { string, element, func } from 'prop-types';
-
 function ActionButton({ text, color, icon, handleClick }) {
   return (
     <div
@@ -19,16 +17,5 @@ function ActionButton({ text, color, icon, handleClick }) {
     </div>
   );
 }
-
-ActionButton.defaultProps = {
-  handleClick: () => {},
-};
-
-ActionButton.propTypes = {
-  text: string.isRequired,
-  color: string.isRequired,
-  icon: element.isRequired,
-  handleClick: func,
-};
 
 export default ActionButton;

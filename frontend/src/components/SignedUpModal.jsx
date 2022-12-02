@@ -1,6 +1,5 @@
 import React from 'react';
 import { FcCheckmark } from 'react-icons/fc';
-import { bool } from 'prop-types';
 
 function SignedUpModal({ visible }) {
   if (!visible) return null;
@@ -21,9 +20,5 @@ function SignedUpModal({ visible }) {
     </div>
   );
 }
-
-SignedUpModal.propTypes = {
-  visible: bool.isRequired,
-};
 
 export default SignedUpModal;

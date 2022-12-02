@@ -1,5 +1,4 @@
 import React from 'react';
-import { string, shape } from 'prop-types';
 
 function FormInput({
   labelText,
@@ -35,21 +34,5 @@ function FormInput({
     </div>
   );
 }
-
-FormInput.defaultProps = {
-  maxLength: '',
-  placeholder: '',
-};
-
-FormInput.propTypes = {
-  labelText: string.isRequired,
-  name: string.isRequired,
-  id: string.isRequired,
-  type: string.isRequired,
-  errors: shape({}).isRequired,
-  registerInput: shape({}).isRequired,
-  maxLength: string,
-  placeholder: string,
-};
 
 export default FormInput;

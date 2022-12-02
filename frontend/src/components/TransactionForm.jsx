@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { func } from 'prop-types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Button from './Button';
 import FormInput from './FormInput';
-import { maskCPFInput, formatCPF } from '../utils/cpfUtils';
-import { CPFSchema, EmailSchema, transactionSchema } from '../services/schemas';
 import CancelButton from './CancelButton';
 import requests from '../services/requests';
 import moneyFormat from '../utils/moneyFormat';
+import { maskCPFInput, formatCPF } from '../utils/cpfUtils';
+import { CPFSchema, EmailSchema, transactionSchema } from '../services/schemas';
 
 const isMethodEmail = (transferMethod) => {
   return transferMethod === 'email';
@@ -136,10 +135,5 @@ function TransactionForm({ handleModal, refreshBalance }) {
     </>
   );
 }
-
-TransactionForm.propTypes = {
-  handleModal: func.isRequired,
-  refreshBalance: func.isRequired,
-};
 
 export default TransactionForm;

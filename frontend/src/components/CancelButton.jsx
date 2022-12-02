@@ -1,5 +1,3 @@
-import { func } from 'prop-types';
-
 function CancelButton({ handleModal }) {
   return (
     <button
@@ -13,9 +11,5 @@ function CancelButton({ handleModal }) {
     </button>
   );
 }
-
-CancelButton.propTypes = {
-  handleModal: func.isRequired,
-};
 
 export default CancelButton;

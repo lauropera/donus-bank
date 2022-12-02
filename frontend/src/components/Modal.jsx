@@ -1,6 +1,5 @@
 import React from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
-import { bool, string, func, element } from 'prop-types';
 
 function Modal({ visible, headerText, handleModal, form }) {
   if (!visible) return null;
@@ -34,12 +33,5 @@ function Modal({ visible, headerText, handleModal, form }) {
     </div>
   );
 }
-
-Modal.propTypes = {
-  visible: bool.isRequired,
-  headerText: string.isRequired,
-  handleModal: func.isRequired,
-  form: element.isRequired,
-};
 
 export default Modal;

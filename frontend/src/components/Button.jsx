@@ -1,5 +1,3 @@
-import { string, func } from 'prop-types';
-
 function Button({ text, type, customStyle, handleClick }) {
   return (
     <button
@@ -13,17 +11,5 @@ function Button({ text, type, customStyle, handleClick }) {
     </button>
   );
 }
-
-Button.defaultProps = {
-  customStyle: '',
-  handleClick: () => {},
-};
-
-Button.propTypes = {
-  text: string.isRequired,
-  type: string.isRequired,
-  customStyle: string,
-  handleClick: func,
-};
 
 export default Button;
