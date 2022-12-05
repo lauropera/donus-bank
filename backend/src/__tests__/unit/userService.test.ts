@@ -168,7 +168,7 @@ describe('Testes unitários de UserService', () => {
 
     it('Retorna um erro de status 400 e mensagem "Campos obrigatórios faltando"', async () => {
       try {
-        await userService.register({} as unknown as IRegister);
+        await userService.register({} as IRegister);
       } catch (err) {
         if (err instanceof HttpException) {
           expect(err.message).to.be.eq('Campos obrigatórios faltando');
@@ -222,6 +222,46 @@ describe('Testes unitários de UserService', () => {
             'Houve um problema ao cadastrar o usuário'
           );
           expect(err.status).to.be.eq(StatusCodes.BAD_REQUEST);
+        }
+      }
+    });
+  });
+
+  describe('GetUser', () => {
+    afterEach(() => sinon.restore());
+
+    it('Retorna o usuário logado com sucesso', async () => {
+      sinon.stub(jwt, 'verify').resolves({ id: 1 });
+      sinon.stub(User, 'findOne').resolves(userMock as User);
+
+      const result = await userService.getUser('token');
+
+      expect(result).to.deep.eq(userMock);
+    });
+
+    it('Retorna o status 400 e mensagem "Token inválido"', async () => {
+      sinon.stub(jwt, 'verify').resolves(undefined);
+
+      try {
+        await userService.getUser('invalidToken');
+      } catch (err) {
+        if (err instanceof HttpException) {
+          expect(err.message).to.be.eq('Token inválido');
+          expect(err.status).to.be.eq(StatusCodes.BAD_REQUEST);
+        }
+      }
+    });
+
+    it('Retorna o status 404 e mensagem "Usuário não encontrado"', async () => {
+      sinon.stub(jwt, 'verify').resolves({ id: 1 });
+      sinon.stub(User, 'findOne').resolves(undefined);
+
+      try {
+        await userService.getUser('token');
+      } catch (err) {
+        if (err instanceof HttpException) {
+          expect(err.message).to.be.eq('Usuário não encontrado');
+          expect(err.status).to.be.eq(StatusCodes.NOT_FOUND);
         }
       }
     });

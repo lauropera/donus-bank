@@ -29,7 +29,7 @@ describe('Testes de integração endpoint POST "/transactions/deposit"', () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon.stub(Account, 'findByPk').resolves(accountMock as Account);
     sinon.stub(Transaction, 'create').resolves();
-    sinon.stub(Account, 'update').resolves();
+    sinon.stub(Account, 'update').resolves([1]);
     sinon.stub(db, 'transaction').resolves({
       async commit() {},
       async rollback() {},

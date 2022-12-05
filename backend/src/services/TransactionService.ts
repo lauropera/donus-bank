@@ -185,7 +185,7 @@ class TransactionService {
   async deposit(
     token: string | undefined,
     deposit: ITransactionDeposit
-  ): Promise<void> {
+  ): Promise<number> {
     TransactionService.validateTransaction(depositSchema, deposit);
 
     const { id } = await Token.authenticate(token);
@@ -206,14 +206,13 @@ class TransactionService {
         { transaction }
       );
 
-      await this._accountModel.update(
+      const [response] = await this._accountModel.update(
         { balance: userAccount.balance + deposit.value },
         { where: { id }, transaction }
       );
 
-      transaction.commit();
+      return response;
     } catch (error) {
-      transaction.rollback();
       throw new HttpException(400, 'Houve um problema ao realizar a transação');
     }
   }
