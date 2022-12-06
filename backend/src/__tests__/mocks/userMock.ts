@@ -24,6 +24,10 @@ export const invalidLoginMocks = [
     email: loginMock.email,
     password: 'queroquero',
   },
+  {
+    email: loginMock.email,
+    password: 'ad',
+  },
 ];
 
 export const userMock = {

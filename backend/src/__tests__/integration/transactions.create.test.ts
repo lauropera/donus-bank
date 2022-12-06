@@ -25,15 +25,15 @@ import { accountMock, newAccountResponseMock } from '../mocks/accountMock';
 
 const { app } = new App();
 
-describe('Testes de integração endpoint POST "/transactions/new"', () => {
+describe('Integration tests for POST "/transactions/new"', () => {
   let chaiHttpResponse: Response;
 
   after(() => sinon.restore());
 
-  describe('Com sucesso', () => {
+  describe('With sucess', () => {
     afterEach(() => sinon.restore());
 
-    it('Retorna o status 201 (CREATED) com uma transação por email e a mensagem "Transação realizada com sucesso"', async () => {
+    it('Returns the status 201 (CREATED) by an email transfer and message "Transação realizada com sucesso"', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(userMock as User);
       sinon.stub(User, 'findOne').resolves(newUserResponseMock as User);
@@ -66,7 +66,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       });
     });
 
-    it('Retorna o status 201 (CREATED) com uma transação por CPF e a mensagem "Transação realizada com sucesso"', async () => {
+    it('Returns the status 201 (CREATED) by a CPF transfer and message "Transação realizada com sucesso"', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(userMock as User);
       sinon.stub(User, 'findOne').resolves(newUserResponseMock as User);
@@ -103,7 +103,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
   describe('Com falhas', () => {
     afterEach(() => sinon.restore());
 
-    it('Retorna o status 400 (BAD_REQUEST) se o email for inválido', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the email is invalid', async () => {
       chaiHttpResponse = await request(app)
         .post('/transactions/new?type=email')
         .send(invalidNewTransactionMocks[0]);
@@ -112,7 +112,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       expect(chaiHttpResponse.body).to.deep.eq({ message: 'Email inválido' });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se o CPF for inválido', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the CPF is invalid', async () => {
       chaiHttpResponse = await request(app)
         .post('/transactions/new?type=cpf')
         .send(invalidNewTransactionMocks[1]);
@@ -121,7 +121,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       expect(chaiHttpResponse.body).to.deep.eq({ message: 'CPF inválido' });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se o valor for menor que 0.01', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the value is less than 0.01', async () => {
       chaiHttpResponse = await request(app)
         .post('/transactions/new?type=email')
         .send(invalidNewTransactionMocks[2]);
@@ -132,7 +132,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se faltarem campos', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if required fields are missing', async () => {
       chaiHttpResponse = await request(app)
         .post('/transactions/new?type=email')
         .send(invalidNewTransactionMocks[3]);
@@ -143,7 +143,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se o corpo da requisição for inválido', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the requisition body is invalid', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
 
       chaiHttpResponse = await request(app)
@@ -156,7 +156,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       });
     });
 
-    it('Retorna o status 404 (NOT_FOUND) se o email destinatário não for encontrado', async () => {
+    it('Returns the status 404 (NOT_FOUND) if the sent email was not found', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(userMock as User);
       sinon.stub(User, 'findOne').resolves(undefined);
@@ -171,7 +171,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       });
     });
 
-    it('Retorna o status 404 (NOT_FOUND) se o CPF destinatário não for encontrado', async () => {
+    it('Returns the status 404 (NOT_FOUND) if the sent CPF was not found', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(userMock as User);
       sinon.stub(User, 'findOne').resolves(undefined);
@@ -186,7 +186,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       });
     });
 
-    it('Retorna o status 422 (UNPROCESSABLE_ENTITY) se a transação for para a mesma conta', async () => {
+    it('Returns the status 422 (UNPROCESSABLE_ENTITY) if the transfer goes to the same account', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(newUserResponseMock as User);
       sinon.stub(User, 'findOne').resolves(newUserResponseMock as User);
@@ -209,7 +209,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       });
     });
 
-    it('Retorna o status 422 (UNPROCESSABLE_ENTITY) se não tiver saldo suficiente', async () => {
+    it('Returns the status 422 (UNPROCESSABLE_ENTITY) if not sufficient balance', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(userMock as User);
       sinon.stub(User, 'findOne').resolves(newUserResponseMock as User);
@@ -232,7 +232,7 @@ describe('Testes de integração endpoint POST "/transactions/new"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se a transação falhar', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the transfer fails', async () => {
       sinon.stub(jwt, 'verify').resolves({ id: 1 });
       sinon.stub(User, 'findByPk').resolves(userMock as User);
       sinon.stub(User, 'findOne').resolves(newUserResponseMock as User);

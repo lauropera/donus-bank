@@ -20,16 +20,16 @@ import { newDepositMock } from '../mocks/transactionsMock';
 
 const { app } = new App();
 
-describe('Testes de integração endpoint POST "/transactions/deposit"', () => {
+describe('Integration tests for POST "/transactions/deposit"', () => {
   let chaiHttpResponse: Response;
 
   afterEach(() => sinon.restore());
 
-  it('Retorna o status 200 (OK) e a mensagem "Depósito realizado com sucesso"', async () => {
+  it('Returns the status 200 (OK) and message "Depósito realizado com sucesso"', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon.stub(Account, 'findByPk').resolves(accountMock as Account);
     sinon.stub(Transaction, 'create').resolves();
-    sinon.stub(Account, 'update').resolves();
+    sinon.stub(Account, 'update').resolves([1]);
     sinon.stub(db, 'transaction').resolves({
       async commit() {},
       async rollback() {},
@@ -46,7 +46,7 @@ describe('Testes de integração endpoint POST "/transactions/deposit"', () => {
     });
   });
 
-  it('Retorna o status 404 (NOT_FOUND) se a conta não for encontrada', async () => {
+  it('Returns the status 404 (NOT_FOUND) if the account was not found', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon.stub(Account, 'findByPk').resolves(undefined);
 
@@ -61,7 +61,7 @@ describe('Testes de integração endpoint POST "/transactions/deposit"', () => {
     });
   });
 
-  it('Retorna o status 400 (BAD_REQUEST) caso o deposito falhe', async () => {
+  it('Returns the status 400 (BAD_REQUEST) if the deposit fails', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon.stub(Account, 'findByPk').resolves(accountMock as Account);
     sinon

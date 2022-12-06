@@ -117,7 +117,7 @@ class TransactionService {
     token: string | undefined,
     transferType: TransactionMethod,
     transactionData: ITransactionCreation
-  ): Promise<void> {
+  ): Promise<ITransaction> {
     TransactionService.validateTransaction(transactionSchema, transactionData);
 
     const { id } = await Token.authenticate(token);
@@ -155,7 +155,7 @@ class TransactionService {
 
     const transaction = await db.transaction();
     try {
-      await this._model.create(
+      const newTransacion = await this._model.create(
         {
           ownerAccountId: ownerAccount.id,
           receiverAccountId: receiverAccount.id,
@@ -175,9 +175,8 @@ class TransactionService {
         { where: { id: receiverAccount.id }, transaction }
       );
 
-      transaction.commit();
+      return newTransacion;
     } catch (error) {
-      transaction.rollback();
       throw new HttpException(400, 'Houve um problema ao realizar a transação');
     }
   }
@@ -185,7 +184,7 @@ class TransactionService {
   async deposit(
     token: string | undefined,
     deposit: ITransactionDeposit
-  ): Promise<void> {
+  ): Promise<number> {
     TransactionService.validateTransaction(depositSchema, deposit);
 
     const { id } = await Token.authenticate(token);
@@ -206,14 +205,13 @@ class TransactionService {
         { transaction }
       );
 
-      await this._accountModel.update(
+      const [response] = await this._accountModel.update(
         { balance: userAccount.balance + deposit.value },
         { where: { id }, transaction }
       );
 
-      transaction.commit();
+      return response;
     } catch (error) {
-      transaction.rollback();
       throw new HttpException(400, 'Houve um problema ao realizar a transação');
     }
   }

@@ -19,7 +19,7 @@ class UserService {
 
   private static validateCredentials(
     schema: Schema,
-    credentials: ILogin | IRegister
+    credentials: ILogin | IRegister,
   ): void {
     const { error } = schema.validate(credentials);
     if (error) throw new HttpException(400, error.message);
@@ -35,7 +35,7 @@ class UserService {
     if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
       throw new HttpException(
         401,
-        !user ? 'Email não cadastrado' : 'Email ou senha inválidos'
+        !user ? 'Email não cadastrado' : 'Email ou senha inválidos',
       );
     }
 
@@ -57,7 +57,7 @@ class UserService {
     if (users.length > 0) throw new HttpException(409, 'CPF já cadastrado');
   }
 
-  async register(credentials: IRegister): Promise<void> {
+  async register(credentials: IRegister): Promise<IUser> {
     UserService.validateCredentials(registerSchema, credentials);
     await this.checkIfUserExists(credentials);
 
@@ -65,18 +65,17 @@ class UserService {
     try {
       const { id: accountId } = await this._accountModel.create(
         { balance: 0 },
-        { transaction }
+        { transaction },
       );
 
       const encryptedPassword = await bcrypt.hash(credentials.password, 8);
-      await this._model.create(
+      const user = await this._model.create(
         { ...credentials, password: encryptedPassword, accountId },
-        { transaction }
+        { transaction },
       );
 
-      transaction.commit();
+      return user;
     } catch (error) {
-      transaction.rollback();
       throw new HttpException(400, 'Houve um problema ao cadastrar o usuário');
     }
   }

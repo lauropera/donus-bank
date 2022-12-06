@@ -16,13 +16,13 @@ import { invalidLoginMocks, loginMock, userMock } from '../mocks/userMock';
 
 const { app } = new App();
 
-describe('Testes de integração endpoint POST "/auth/login"', () => {
+describe('Integration tests for POST "/auth/login"', () => {
   let chaiHttpResponse: Response;
 
   after(() => sinon.restore());
 
-  describe('Com sucesso', () => {
-    it('Retorna o status 200 (OK) e um token', async () => {
+  describe('With success', () => {
+    it('Returns the status 200 (OK) and a token', async () => {
       sinon.stub(User, 'findOne').resolves(userMock as User);
       sinon.stub(jwt, 'sign').resolves('generatedToken');
 
@@ -33,10 +33,10 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
     });
   });
 
-  describe('Com falhas', () => {
+  describe('With failure', () => {
     afterEach(() => sinon.restore());
 
-    it('Retorna o status 400 (BAD_REQUEST) se o email for inválido', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the email is invalid', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/login')
         .send(invalidLoginMocks[0]);
@@ -45,7 +45,7 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
       expect(chaiHttpResponse.body).to.deep.eq({ message: 'Email inválido' });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se a senha não for passada', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the password was not send', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/login')
         .send(invalidLoginMocks[1]);
@@ -56,7 +56,7 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se o corpo da requisição for inválido', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the requisition body is invalid', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/login')
         .send(invalidLoginMocks[2]);
@@ -67,7 +67,7 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
       });
     });
 
-    it('Retorna o status 401 (UNAUTHORIZED) se o email não for cadastrado', async () => {
+    it('Returns the status 401 (UNAUTHORIZED) if the email is not signed up', async () => {
       sinon.stub(User, 'findOne').resolves(undefined);
 
       chaiHttpResponse = await request(app)
@@ -80,7 +80,7 @@ describe('Testes de integração endpoint POST "/auth/login"', () => {
       });
     });
 
-    it('Retorna o status 401 (UNAUTHORIZED) se a senha for incorreta', async () => {
+    it('Returns the status 401 (UNAUTHORIZED) if the password is wrong', async () => {
       sinon.stub(User, 'findOne').resolves(userMock as User);
 
       chaiHttpResponse = await request(app)
