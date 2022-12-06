@@ -12,12 +12,22 @@ export const newTransactionMocks = [
   {
     email: 'sebastian@sebs.com',
     value: 2000,
-  }
+  },
 ];
+
+export const newTransactionResponseMock = {
+  id: 1,
+  ownerAccountId: 1,
+  receiverAccountId: 2,
+  email: 'sebastian@sebs.com',
+  value: 12,
+  transactionTypeId: 2,
+  createdAt: '2022-12-10',
+};
 
 export const newDepositMock = {
   value: 200,
-}
+};
 
 export const invalidNewTransactionMocks = [
   {

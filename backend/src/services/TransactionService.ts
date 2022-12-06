@@ -117,7 +117,7 @@ class TransactionService {
     token: string | undefined,
     transferType: TransactionMethod,
     transactionData: ITransactionCreation
-  ): Promise<void> {
+  ): Promise<ITransaction> {
     TransactionService.validateTransaction(transactionSchema, transactionData);
 
     const { id } = await Token.authenticate(token);
@@ -155,7 +155,7 @@ class TransactionService {
 
     const transaction = await db.transaction();
     try {
-      await this._model.create(
+      const newTransacion = await this._model.create(
         {
           ownerAccountId: ownerAccount.id,
           receiverAccountId: receiverAccount.id,
@@ -175,9 +175,8 @@ class TransactionService {
         { where: { id: receiverAccount.id }, transaction }
       );
 
-      transaction.commit();
+      return newTransacion;
     } catch (error) {
-      transaction.rollback();
       throw new HttpException(400, 'Houve um problema ao realizar a transação');
     }
   }
