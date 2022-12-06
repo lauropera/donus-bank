@@ -38,7 +38,7 @@ import { ITransactionCreation } from '../../interfaces/ITransaction';
 
 const TOKEN_MOCK = 'token';
 
-describe.only('TransactionService unit tests for deposit method', () => {
+describe('TransactionService unit tests for deposit method', () => {
   const transactionService = new TransactionService();
 
   describe('Insert', () => {

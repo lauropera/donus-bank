@@ -24,13 +24,13 @@ import {
 
 const { app } = new App();
 
-describe('Testes de integração endpoint POST "/auth/register"', () => {
+describe('Integration tests for POST "/auth/register"', () => {
   let chaiHttpResponse: Response;
 
   after(() => sinon.restore());
 
-  describe('Com sucesso', () => {
-    it('Retorna o status 201 (CREATED) e a mensagem "Usuário cadastrado com sucesso"', async () => {
+  describe('With success', () => {
+    it('Returns the status 201 (CREATED) and message "Usuário cadastrado com sucesso"', async () => {
       sinon.stub(User, 'findAll').resolves([]);
       sinon.stub(Account, 'create').resolves(newAccountResponseMock as Account);
       sinon.stub(User, 'create').resolves(newUserResponseMock as User);
@@ -50,10 +50,10 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
     });
   });
 
-  describe('Com falhas', () => {
+  describe('With failure', () => {
     afterEach(() => sinon.restore());
 
-    it('Retorna o status 400 (BAD_REQUEST) se o nome tiver menos de 2 caracteres', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the name length is less than two chars', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/register')
         .send(invalidNewUserMocks[0]);
@@ -64,7 +64,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 409 (CONFLICT) se o email já for cadastrado', async () => {
+    it('Returns the status 409 (CONFLICT) if the email is already signed up', async () => {
       sinon
         .stub(User, 'findAll')
         .resolves([{ dataValues: { ...newUserResponseMock } }] as User[]);
@@ -79,7 +79,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 409 (CONFLICT) se o CPF já for cadastrado', async () => {
+    it('Returns the status 409 (CONFLICT) if the CPF is already signed up', async () => {
       sinon
         .stub(User, 'findAll')
         .resolves([{ dataValues: { ...newUserResponseMock } }] as User[]);
@@ -94,7 +94,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se o email for inválido', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the email is invalid', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/register')
         .send(invalidNewUserMocks[1]);
@@ -105,7 +105,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se o CPF for inválido', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the CPF is invalid', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/register')
         .send(invalidNewUserMocks[2]);
@@ -116,7 +116,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se a senha for inválida', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the password is invalid', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/register')
         .send(invalidNewUserMocks[3]);
@@ -127,7 +127,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se campos obrigatórios faltarem', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if required fields are missing', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/register')
         .send(invalidNewUserMocks[4]);
@@ -138,7 +138,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se o corpo da requisição for inválido', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the requisition body is invalid', async () => {
       chaiHttpResponse = await request(app)
         .post('/auth/register')
         .send(invalidNewUserMocks[5]);
@@ -149,7 +149,7 @@ describe('Testes de integração endpoint POST "/auth/register"', () => {
       });
     });
 
-    it('Retorna o status 400 (BAD_REQUEST) se o registro falhar', async () => {
+    it('Returns the status 400 (BAD_REQUEST) if the sign up method fails', async () => {
       sinon.stub(User, 'findAll').resolves([]);
       sinon.stub(db, 'transaction').rejects({
         async commit() {},

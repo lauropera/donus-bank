@@ -16,12 +16,12 @@ import { userWithAccountMock } from '../mocks/userMock';
 
 const { app } = new App();
 
-describe('Testes de integração endpoint GET "/auth/me"', () => {
+describe('Integration tests for GET "/auth/me"', () => {
   let chaiHttpResponse: Response;
 
   afterEach(() => sinon.restore());
 
-  it('Retorna o status 200 (OK) e as informações do usuário', async () => {
+  it('Returns the status 200 (OK) and the user data', async () => {
     sinon
       .stub(User, 'findOne')
       .resolves(userWithAccountMock as unknown as User);
@@ -35,7 +35,7 @@ describe('Testes de integração endpoint GET "/auth/me"', () => {
     expect(chaiHttpResponse.body).to.deep.eq(userWithAccountMock);
   });
 
-  it('Retorna o status 404 (NOT_FOUND) se o usuário não for encontrado no banco de dados', async () => {
+  it('Returns the status 404 (NOT_FOUND) if the user was not found in database', async () => {
     sinon.stub(User, 'findOne').resolves(undefined as unknown as User);
     sinon.stub(jwt, 'verify').resolves({ id: 9999 });
 
@@ -49,7 +49,7 @@ describe('Testes de integração endpoint GET "/auth/me"', () => {
     });
   });
 
-  it('Retorna o status 400 (BAD_REQUEST) se o token for inválido', async () => {
+  it('Returns the status 400 (BAD_REQUEST) if the token is invalid', async () => {
     chaiHttpResponse = await request(app)
       .get('/auth/me')
       .set('Authorization', 'invalidtoken');

@@ -27,7 +27,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
 
   afterEach(() => sinon.restore());
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário', async () => {
+  it('Returns the status 200 (OK) and all user transactions', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -41,7 +41,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq(transactionsListMock);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações que o usuário enviou', async () => {
+  it('Returns the status 200 (OK) and all sent user transactions', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -55,7 +55,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq(sentTransactionsMock);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações que o usuário recebeu', async () => {
+  it('Returns the status 200 (OK) and all received user transactions', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -69,7 +69,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq(receivedTransactionsMock);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário a partir de uma data', async () => {
+  it('Returns the status 200 (OK) and all user transactions from a date', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -83,7 +83,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq(transactionsAtLeastDateMock);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário até uma data', async () => {
+  it('Returns the status 200 (OK) and all user transactions until a date', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -97,7 +97,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq(transactionsUntilDateMock);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário entre duas datas', async () => {
+  it('Returns the status 200 (OK) and all user transactions between two dates', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -111,7 +111,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq(transactionsUntilDateMock);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário recebidas a partir de uma data', async () => {
+  it('Returns the status 200 (OK) and all received user transactions from a date', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -131,7 +131,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     ]);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário recebidas até uma data', async () => {
+  it('Returns the status 200 (OK) and all received user transactions until a date', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -145,7 +145,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq([transactionsListMock[2]]);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário enviadas a partir de uma data', async () => {
+  it('Returns the status 200 (OK) and all sent user transactions from a date', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -159,7 +159,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq([transactionsListMock[1]]);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário enviadas até uma data', async () => {
+  it('Returns the status 200 (OK) and all sent user transactions until a date', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -173,7 +173,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq(transactionsUntilDateMock);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário recebidas entre duas datas', async () => {
+  it('Returns the status 200 (OK) and all received user transactions between two dates', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
@@ -187,7 +187,7 @@ describe('Testes de integração do endpoint GET "/transactions/all"', () => {
     expect(chaiHttpResponse.body).to.deep.eq([transactionsListMock[2]]);
   });
 
-  it('Retorna o status 200 (OK) e todas as transações do usuário enviadas entre duas datas', async () => {
+  it('Returns the status 200 (OK) and all sent user transactions between two dates', async () => {
     sinon.stub(jwt, 'verify').resolves({ id: 1 });
     sinon
       .stub(Transaction, 'findAll')
