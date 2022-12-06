@@ -15,7 +15,7 @@ Aplicação full stack dockerizada desenvolvida em React e Node.js com TypeScrip
 - Utilizar um ORM
 - Utilizar  um banco de dados MySQL
 - Documentar a API com o framework Swagger UI
-- Testes de integração no backend utilizando Mocha.js, Chai.js e Sinon.js com 100% de cobertura
+- Testes unitários e de integração no backend utilizando Mocha.js, Chai.js e Sinon.js com 100% de cobertura
 - Desenvolver o frontend em React
 - Utilizar Tailwind para a estilização do frontend
 
